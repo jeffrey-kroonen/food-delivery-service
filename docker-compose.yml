@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.2
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes: 
+      - ./backend/docker/mariadb:/bitnami/mariadb
+
+  app:
+    tty: true
+    image: docker.io/bitnami/laravel:8
+    environment:
+      - DB_HOST=mariadb
+      - DB_USERNAME=${MARIADB_USER}
+      - DB_DATABASE=${MARIADB_DATABASE}
+      - DB_PASSWORD=${MARIADB_PASSWORD}
+    depends_on:
+      - mariadb
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend/code:/app
+    # privileged: true # Privileged mode could be required to run this container under Windows
