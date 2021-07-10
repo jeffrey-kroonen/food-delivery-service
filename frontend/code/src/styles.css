@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+/**
+ * Card Sharp
+ *
+ * Customize style of cards that displays data.
+ */
+ .card-sharp:hover {
+    cursor: pointer;
+    background: #f2f7ff !important;
+    box-shadow: rgba(135, 150, 165, 0.2) 0px 8px 24px;
+}
+
+.card-sharp:not(:last-child) {
+    margin-bottom: 2rem;
+}
