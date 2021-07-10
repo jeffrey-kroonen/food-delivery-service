@@ -1,0 +1,64 @@
+<div class="container">
+
+    <div class="row mt-5">
+        <div class="col-md-6 mx-auto">
+            <!-- SEARCH FORM -->
+            <input type="search" name="" id="" class="form-control rounded-0" placeholder="Zoek op restaurantnaam">
+            <!-- END SEARCH FORM -->
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-5">
+        
+        <!-- SIDEBAR -->
+        <div class="col-sm-3">
+            <div class="card border-0 border-end rounded-0 bg-transparent">
+                <div class="card-body">
+                    <!-- FILTERS -->
+                    <app-restaurant-filters></app-restaurant-filters>
+                    <!-- END FILTERS -->
+                </div>
+            </div>
+        </div>
+        <!-- END SIDEBAR -->
+
+        <!-- MAIN CONTENT -->
+        <div class="col-sm-9">
+            <!-- RESTAURANT CARDS -->
+            <div *ngFor="let restaurant of restaurants" class="card card-sharp rounded-0 bg-transparent" routerLink="/restaurant/{{ restaurant.id }}">
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="{{ restaurant.logo_image_url }}" style="max-width: 7rem;" alt="Restaurant logo">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="h5 d-block">{{ restaurant.name }}</div>
+                                    <small>{{ restaurant.description }}</small>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-start ">
+                                        <small class="me-3"><i class="far fa-clock "></i> Gemiddelde bezorgtijd</small>
+                                        <small class="me-3"><i class="fas fa-biking"></i> Transport kosten</small>
+                                        <small class=""><i class="fas fa-shopping-bag"></i> Minimaal bestel bedrag</small>
+                                    </div>
+                                </div>                                
+                                <!-- <div class="col-md-4"><small><i class="far fa-clock"></i> Gemiddelde bezorgtijd</small></div>
+                                <div class="col-md-4"><small><i class="fas fa-biking"></i> Transport kosten</small></div>
+                                <div class="col-md-4"><small><i class="fas fa-shopping-bag"></i> Minimaal bestel bedrag</small></div> -->
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- END RESTAURANT CARDS -->
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+</div>

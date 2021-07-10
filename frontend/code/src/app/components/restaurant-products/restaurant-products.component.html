@@ -1,0 +1,62 @@
+<div class="container mt-5 mb-5">
+    <!-- RESTAURANT INFORMATION -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="h3">{{ restaurant.name }}</h2>
+
+            <p>
+                {{ restaurant.description }}
+            </p>
+        </div>
+    </div>
+    <!-- END RESTAURANT INFORMATION -->
+
+    <!-- PRODUCT CATEGORIES-->
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav justify-content-start bg-light p-2">
+                <li *ngFor="let productCategory of productCategoryList" class="nav-item">
+                    <a href="#!" class="nav-link text-dark" routerLinkActive="text-primary">{{ productCategory.name }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END PRODUCT CATEGORIES-->
+
+    <!-- PRODUCTS PER PRODUCT CATEGORY -->
+    <div *ngFor="let productCategory of productCategoryList" class="mt-4">
+        <div class="p-3 bg-light h5">{{ productCategory.name }}</div>
+        
+        <div *ngIf="productCategory.products.length > 0; else productsEmpty">
+            <div *ngFor="let product of productCategory.products" class="card card-sharp mb-2 rounded-0 bg-transparent">
+                <div class="card-body">
+                    <div class="row">
+    
+                        <div class="col-md-9">
+                            <strong>{{ product.name}}</strong>
+                            <p>
+                                {{ product.description }}
+                            </p>
+    
+                            <strong class="text-warning">{{ product.price_per_unit | currency:'EUR' }}</strong>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <img src="{{ product.name }}" alt="Product afbeelding">
+                        </div>
+    
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <ng-template #productsEmpty>
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <p class="ms-3">Geen producten gevonden.</p>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <!-- END PRODUCTS PER PRODUCT CATEGORY -->
+</div>
