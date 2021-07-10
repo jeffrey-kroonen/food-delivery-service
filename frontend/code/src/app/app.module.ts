@@ -8,6 +8,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { RestaurantOverviewComponent } from './components/restaurant-overview/restaurant-overview.component';
 import { RestaurantFiltersComponent } from './components/restaurant-filters/restaurant-filters.component';
 import { RestaurantProductsComponent } from './components/restaurant-products/restaurant-products.component';
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { RestaurantProductsComponent } from './components/restaurant-products/re
     NavigationComponent,
     RestaurantOverviewComponent,
     RestaurantFiltersComponent,
-    RestaurantProductsComponent
+    RestaurantProductsComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,

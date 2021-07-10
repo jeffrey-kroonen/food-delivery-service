@@ -14,6 +14,8 @@ export class RestaurantProductsComponent implements OnInit {
 
   productCategoryList!: any;
 
+  currentUrl!: string;
+
   constructor(private restaurantService: RestaurantService,
               private route: ActivatedRoute) { }
 

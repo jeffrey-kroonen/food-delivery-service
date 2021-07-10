@@ -7,6 +7,7 @@
             <p>
                 {{ restaurant.description }}
             </p>
+
         </div>
     </div>
     <!-- END RESTAURANT INFORMATION -->
@@ -16,7 +17,7 @@
         <div class="col-md-12">
             <ul class="nav justify-content-start bg-light p-2">
                 <li *ngFor="let productCategory of productCategoryList" class="nav-item">
-                    <a href="#!" class="nav-link text-dark" routerLinkActive="text-primary">{{ productCategory.name }}</a>
+                    <a pageScroll href="/restaurant/{{ restaurant.id}}#{{ productCategory.name }}" class="nav-link text-dark" routerLinkActive="text-primary">{{ productCategory.name }}</a>
                 </li>
             </ul>
         </div>
@@ -25,7 +26,7 @@
 
     <!-- PRODUCTS PER PRODUCT CATEGORY -->
     <div *ngFor="let productCategory of productCategoryList" class="mt-4">
-        <div class="p-3 bg-light h5">{{ productCategory.name }}</div>
+        <div class="p-3 bg-light h5" id="{{ productCategory.name }}">{{ productCategory.name }}</div>
         
         <div *ngIf="productCategory.products.length > 0; else productsEmpty">
             <div *ngFor="let product of productCategory.products" class="card card-sharp mb-2 rounded-0 bg-transparent">
@@ -42,7 +43,7 @@
                         </div>
                         
                         <div class="col-md-3">
-                            <img src="{{ product.name }}" alt="Product afbeelding">
+                            <img src="{{ product.image_url }}" alt="Product afbeelding">
                         </div>
     
                     </div>

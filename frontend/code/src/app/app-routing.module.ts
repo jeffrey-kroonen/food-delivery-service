@@ -4,8 +4,8 @@ import { RestaurantOverviewComponent } from './components/restaurant-overview/re
 import { RestaurantProductsComponent } from './components/restaurant-products/restaurant-products.component';
 
 const routes: Routes = [
-  { path: '', component: RestaurantOverviewComponent },
-  { path: 'restaurant/:id', component: RestaurantProductsComponent }
+  { path: 'restaurant/:id', component: RestaurantProductsComponent },
+  { path: '', component: RestaurantOverviewComponent }
 ];
 
 @NgModule({

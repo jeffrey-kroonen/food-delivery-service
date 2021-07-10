@@ -14,7 +14,7 @@ export class RestaurantService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getRestaurant(restaurantId: number) {
+  getRestaurant(restaurantId: number): Observable<Restaurant> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
     return this.httpClient.get<Restaurant>(apiUrl);
@@ -26,7 +26,7 @@ export class RestaurantService {
     return this.httpClient.get<Restaurant[]>(apiUrl);
   }
 
-  getProductsUnderProductCategories(restaurantId: number) {
+  getProductsUnderProductCategories(restaurantId: number): Observable<GetResponseProductCategoryList> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}/product-category-list`;
 
     return this.httpClient.get<GetResponseProductCategoryList>(apiUrl);
