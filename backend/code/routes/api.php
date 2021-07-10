@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RestaurantController;
@@ -28,3 +29,6 @@ Route::apiResource('product-categories', ProductCategoryController::class);
 
 // Restaurant
 Route::get('restaurants/{id}/product-category-list', [RestaurantController::class, 'getProductCategoryList']);
+
+// Location
+Route::post('location/reverse', [LocationController::class, 'getLocationFromCoordinates']);
