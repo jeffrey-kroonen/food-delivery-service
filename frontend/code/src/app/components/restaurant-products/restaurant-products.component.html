@@ -30,6 +30,13 @@
         
         <div *ngIf="productCategory.products.length > 0; else productsEmpty">
             <div *ngFor="let product of productCategory.products" class="card card-sharp mb-2 rounded-0 bg-transparent">
+
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-outline-primary btn-sm border border-top-0 border-end-0 rounded-0" style="margin-bottom: -30px;">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
                 <div class="card-body">
                     <div class="row">
     
@@ -43,7 +50,10 @@
                         </div>
                         
                         <div class="col-md-3">
-                            <img src="{{ product.image_url }}" alt="Product afbeelding">
+                            <div *ngIf="product.image_url.length">
+                                <img [src]="product.image_url" alt="Product afbeelding">
+                            </div>
+                            
                         </div>
     
                     </div>

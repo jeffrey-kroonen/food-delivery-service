@@ -9,6 +9,7 @@ import { RestaurantOverviewComponent } from './components/restaurant-overview/re
 import { RestaurantFiltersComponent } from './components/restaurant-filters/restaurant-filters.component';
 import { RestaurantProductsComponent } from './components/restaurant-products/restaurant-products.component';
 import { LocationComponent } from './components/location/location.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LocationComponent } from './components/location/location.component';
     RestaurantOverviewComponent,
     RestaurantFiltersComponent,
     RestaurantProductsComponent,
-    LocationComponent
+    LocationComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
