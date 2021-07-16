@@ -6,6 +6,7 @@ use App\Models\Restaurant;
 use App\Services\RestaurantService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RestaurantController extends Controller
 {
@@ -42,18 +43,37 @@ class RestaurantController extends Controller
         // Validate the posted fields.
         $validatedData = $request->validate([
             'name' => 'required|unique:App\Models\Restaurant,name|max:255',
-            'description' => 'required|max:255',
-            'logo_image_url' => 'required|max:255'
+            'description' => 'required',
+            'average_delivery_time' => 'required|integer',
+            'currency' => ['size:3', Rule::in(['EUR', 'USD'])],
+            'delivery_charge' => 'required',
+            'minimum_order_amount' => 'required',
+            'metric' => Rule::in(['kilometers', 'miles']),
+            'delivery_radius' => 'required'
         ]);
 
-        // Store new Restaurant.
-        $restaurant = Restaurant::create([
+        // Set data array for a new Restaurant.
+        $restaurantData = [
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
-            'logo_image_url' => $validatedData['logo_image_url'],
             'latitude' => $request->latitude ?: null,
-            'longitude' => $request->longitude ?: null
-        ]);
+            'longitude' => $request->longitude ?: null,
+            'average_delivery_time' => $validatedData['average_delivery_time'],
+            'delivery_charge' => $validatedData['delivery_charge'],
+            'minimum_order_amount' => $validatedData['minimum_order_amount'],
+            'delivery_radius' => $validatedData['delivery_radius']
+        ];
+        // Set optional values for column currency.
+        if (in_array('currency', $validatedData)) {
+            $restaurantData['currency'] = $validatedData['currency'];
+        }
+        // Set optional values for column metric.
+        if (in_array('metric', $validatedData)) {
+            $restaurantData['metric'] = $validatedData['metric'];
+        }
+
+        // Store new Restaurant.
+        $restaurant = Restaurant::create($restaurantData);
 
         // Return HTTP response to enduser.
         return response($restaurant, 201)

@@ -20,7 +20,13 @@ class Restaurant extends Model
         'logo_image_url',
         'latitude',
         'longitude',
-        'is_active'
+        'is_active',
+        'average_delivery_time',
+        'currency',
+        'delivery_charge',
+        'minimum_order_amount',
+        'metric',
+        'delivery_radius'
     ];
 
     /**

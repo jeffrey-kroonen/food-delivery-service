@@ -43,7 +43,7 @@ export class RestaurantService {
   }
 
   loadLogoImage(restaurant: Restaurant) {
-    const fileName = this.parseToImageFileName(restaurant);
+    const fileName = (restaurant.logo_image_url != null) ? this.parseToImageFileName(restaurant) : 'image-placeholder.png';
     const apiUrl = `${environment.backendBaseUrl}/public/images/${fileName}`
 
     this.httpClient.get<{path: string}>(apiUrl).subscribe(
@@ -57,7 +57,7 @@ export class RestaurantService {
     let logoImageUrls: string[] = [];
 
     for (let restaurant of restaurants) {
-      const fileName = this.parseToImageFileName(restaurant);
+      const fileName = (restaurant.logo_image_url != null) ? this.parseToImageFileName(restaurant) : 'image-placeholder.png';
       const apiUrl = `${environment.backendBaseUrl}/public/images/${fileName}`
 
       this.httpClient.get<{path: string}>(apiUrl).subscribe(
