@@ -78,7 +78,7 @@ export class RestaurantService {
 
     // Headers
     const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Accept', 'application/json');
 
     return this.httpClient.post<{message: string, path:string}>(apiUrl, formData, {headers: headers}).subscribe(
@@ -89,5 +89,36 @@ export class RestaurantService {
     );
   }
   
+  handleMetricPreference(restaurantId: number, metricyPreference: string) {
+    const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
+
+    // Body
+    const body: Object = {
+      metric: metricyPreference
+    };
+
+    // Headers
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Accept', 'application/json');
+
+    return this.httpClient.put<Restaurant>(apiUrl, body, {headers: headers});
+  }
+
+  handleCurrencyPreference(restaurantId: number, currencyPreference: string) {
+    const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
+
+    // Body
+    const body: Object = {
+      currency: currencyPreference
+    };
+
+    // Headers
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Accept', 'application/json');
+
+    return this.httpClient.put<Restaurant>(apiUrl, body, {headers: headers});
+  }
 
 }

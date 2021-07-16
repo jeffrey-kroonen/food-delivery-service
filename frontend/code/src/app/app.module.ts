@@ -10,6 +10,10 @@ import { RestaurantFiltersComponent } from './components/restaurant-filters/rest
 import { RestaurantProductsComponent } from './components/restaurant-products/restaurant-products.component';
 import { LocationComponent } from './components/location/location.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { registerLocaleData } from '@angular/common';
+import localeNl from '@angular/common/locales/nl';
+
+registerLocaleData(localeNl, 'nl');
 
 @NgModule({
   declarations: [

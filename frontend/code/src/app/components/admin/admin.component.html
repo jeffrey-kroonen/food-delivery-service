@@ -1,27 +1,100 @@
 <div class="container mt-5 mb-5">
 
     <div class="row">
-        <div class="col-md-12">
-            <h2 class="h3">Mijn restaurant</h2>
+        <div class="col-md-8">
+            <div class="row gy-2">
+                <div class="col-lg-6">
+                    <h2 class="h3">Mijn restaurant</h2>
+                </div>
+                <div class="col-lg-6 mb-2">
+                    <div class="d-flex align-items-center justify-content-lg-end">
+                        <div class="btn-group me-2" role="group">
+                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-1" class="btn-check" name="currencyPreference" value="EUR" autocomplete="off" [checked]="currentRestaurant?.currency == 'EUR'">
+                            <label for="currency-radio-1" class="btn btn-outline-primary btn-sm">EUR</label>
+            
+                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-2" class="btn-check" name="currencyPreference" value="USD" autocomplete="off" [checked]="currentRestaurant?.currency == 'USD'">
+                            <label for="currency-radio-2" class="btn btn-outline-primary btn-sm">USD</label>
+                        </div>
+
+                        <div class="btn-group" role="group">
+                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-1" class="btn-check" name="metricPreference" value="kilometers" autocomplete="off" [checked]="currentRestaurant?.metric == 'kilometers'">
+                            <label for="metric-radio-1" class="btn btn-outline-primary btn-sm">Kilometers</label>
+            
+                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-2" class="btn-check" name="metricPreference" value="miles" autocomplete="off" [checked]="currentRestaurant?.metric == 'miles'">
+                            <label for="metric-radio-2" class="btn btn-outline-primary btn-sm">Miles</label>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
         </div>
+        <div class="col-md-4"></div>
     </div>
 
-    <div class="row">
+    <div class="row gy-2">
         <!-- RESTAURANT DATA -->        
-        <div class="col-md-9">
+        <div class="col-lg-8">
 
             <div class="card rounded-0 h-100" style="min-height: 300px;">
                 <div class="card-body">
                     
                     <form action="">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Restaurant naam</label>
-                            <input type="text" name="name" id="name" class="form-control" [value]="currentRestaurant?.name">
+                            <label for="inputName" class="form-label">Restaurant naam</label>
+                            <input type="text" id="inputName" class="form-control" [value]="currentRestaurant?.name">
                         </div>
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Restaurant omschrijving</label>
-                            <textarea name="name" id="name" class="form-control" rows="3">{{ currentRestaurant?.description }}</textarea>
+                            <label for="inputDescription" class="form-label">Restaurant omschrijving</label>
+                            <textarea id="inputDescription" class="form-control" rows="3">{{ currentRestaurant?.description }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="selectAverageDeliveryTime" class="form-label">Gemiddelde levertijd</label>
+                            <select id="selectAverageDeliveryTime" class="form-select">
+                                <option *ngIf="currentRestaurant?.average_delivery_time == null" selected>Selecteer een tijd..</option>
+                                <option *ngFor="let minute of minuteRange" [value]="minute">{{ minute}} minuten</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputDeliveryCharge" class="form-label">Bezorgkosten</label>
+                            <div class="input-group" *ngIf="currentRestaurant.currency == 'EUR'">
+                                <span class="input-group-text" id="deliver-charge1">&euro;</span>
+                                <input type="text" class="form-control" aria-describedby="deliver-charge1" [value]="currentRestaurant?.delivery_charge | number: '.2':'nl'">                                
+                            </div>
+                            <div class="input-group" *ngIf="currentRestaurant.currency == 'USD'">
+                                <span class="input-group-text" id="minimum-order-amount1">&#36;</span>
+                                <input type="text" class="form-control" aria-describedby="deliver-charge1" [value]="currentRestaurant?.delivery_charge | number: '.2':'en'">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputMinimumOrderAmount" class="form-label">Minimum bestelbedrag</label>
+                            <div class="input-group" *ngIf="currentRestaurant.currency == 'EUR'">
+                                <span class="input-group-text" id="minimum-order-amount1">&euro;</span>
+                                <input type="text" class="form-control" id="inputMinimumOrderAmount" aria-describedby="minimum-order-amount1" [value]="currentRestaurant?.minimum_order_amount | number: '.2':'nl'">                                
+                            </div>
+                            <div class="input-group" *ngIf="currentRestaurant.currency == 'USD'">
+                                <span class="input-group-text" id="minimum-order-amount1">&#36;</span>
+                                <input type="text" class="form-control" id="inputMinimumOrderAmount" aria-describedby="minimum-order-amount1" [value]="currentRestaurant?.minimum_order_amount | number: '.2':'en'">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputDeliveryRadius" class="form-label">Radius</label>
+                            
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="inputDeliveryRadius" aria-describedby="delivery-radius1" *ngIf="currentRestaurant.metric == 'kilometers'" [value]="currentRestaurant?.delivery_radius | number: '.2':'nl'">
+                                <input type="text" class="form-control" id="inputDeliveryRadius" aria-describedby="delivery-radius1" *ngIf="currentRestaurant.metric == 'miles'" [value]="currentRestaurant?.delivery_radius | number: '.2':'en'">
+                                <span class="input-group-text" id="deliver-radius1" *ngIf="currentRestaurant.metric == 'kilometers'">kilometer</span>
+                                <span class="input-group-text" id="deliver-radius1" *ngIf="currentRestaurant.metric == 'miles'">miles</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Bijwerken</button>
                         </div>
                     </form>
 
@@ -31,10 +104,10 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-lg-4">
 
             <div class="card rounded-0 card-sharp h-100" (click)="file.click()" style="max-height: 300px;">
-                <div class="card-body mx-auto">
+                <div class="card-body d-flex flex-wrap align-items-center mx-auto">
                     <img src="{{ logoImageUrl }}" alt="Restaurant logo" style="max-width: 14rem;">
                 </div>
             </div>

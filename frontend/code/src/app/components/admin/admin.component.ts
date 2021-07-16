@@ -14,16 +14,28 @@ export class AdminComponent implements OnInit {
 
   logoImageUrl!: string;
 
+  minuteRange: number[] = [];
+
   constructor(private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
-    this.restaurantService.getRestaurant(2).subscribe(
+    this.restaurantService.getRestaurant(1).subscribe(
       data => {
         this.currentRestaurant = data;
         this.handleRetrieveLogoImage();
         this.updateLogoImageUrl();
+        this.generateMinutes();
       }
     );
+  }
+  
+  generateMinutes() {
+    const steps = 10;
+    const iteration = 12;
+
+    for (let i = 1; i < (iteration + 1); i++) {
+      this.minuteRange.push(i * steps);
+    }
   }
   
   updateLogoImageUrl() {
@@ -33,6 +45,35 @@ export class AdminComponent implements OnInit {
           this.logoImageUrl = data
         }
     );
+  }
+
+  handleCurrencyPreference(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const currencyPreference = target.value;
+
+    if (currencyPreference != this.currentRestaurant.currency) {
+      this.restaurantService.handleCurrencyPreference(this.currentRestaurant.id, currencyPreference).subscribe(
+        updatedRestaurant => {
+          this.currentRestaurant = updatedRestaurant;
+          console.log(this.currentRestaurant);
+        }
+      );
+    }
+    
+  }
+
+  handleMetricPreference(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const metricyPreference = target.value;
+
+    if (metricyPreference != this.currentRestaurant.metric) {
+      this.restaurantService.handleMetricPreference(this.currentRestaurant.id, metricyPreference).subscribe(
+        updatedRestaurant => {
+          this.currentRestaurant = updatedRestaurant;
+          console.log(this.currentRestaurant);
+        }
+      );
+    }
   }
 
   handleRetrieveLogoImage() {
