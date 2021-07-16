@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <ul class="nav justify-content-start bg-light p-2">
                 <li *ngFor="let productCategory of productCategoryList" class="nav-item">
-                    <a pageScroll href="/restaurant/{{ restaurant.id}}#{{ productCategory.name }}" class="nav-link text-dark" routerLinkActive="text-primary">{{ productCategory.name }}</a>
+                    <a pageScroll href="/restaurants/{{ restaurant.id}}#{{ productCategory.name }}" class="nav-link text-dark" routerLinkActive="text-primary">{{ productCategory.name }}</a>
                 </li>
             </ul>
         </div>

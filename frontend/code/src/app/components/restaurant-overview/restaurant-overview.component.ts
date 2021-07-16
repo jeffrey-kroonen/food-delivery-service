@@ -12,6 +12,8 @@ export class RestaurantOverviewComponent implements OnInit {
 
   restaurants: Restaurant[] = [];
 
+  logoImageUrls: any = [];
+
   constructor(private restaurantService: RestaurantService,
               private route: ActivatedRoute) { }
 
@@ -25,6 +27,8 @@ export class RestaurantOverviewComponent implements OnInit {
     this.restaurantService.getRestaurantList().subscribe(
       data => {
         this.restaurants = data;
+        this.logoImageUrls = this.restaurantService.loadLogoImages(this.restaurants);
+        console.log(this.logoImageUrls);
       }
     );
   }

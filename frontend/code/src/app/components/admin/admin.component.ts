@@ -14,13 +14,10 @@ export class AdminComponent implements OnInit {
 
   logoImageUrl!: string;
 
-  // fileToUpload: File|null = null;
-
-  constructor(private restaurantService: RestaurantService,
-              private httpClient: HttpClient) { }
+  constructor(private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
-    this.restaurantService.getRestaurant(1).subscribe(
+    this.restaurantService.getRestaurant(2).subscribe(
       data => {
         this.currentRestaurant = data;
         this.handleRetrieveLogoImage();
@@ -39,11 +36,7 @@ export class AdminComponent implements OnInit {
   }
 
   handleRetrieveLogoImage() {
-    // Get file name.
-    const logoImageUrlSubsets = this.currentRestaurant.logo_image_url.split('/');
-    const fileName = logoImageUrlSubsets.pop() || '';
-
-    this.restaurantService.loadLogoImage(fileName);
+    this.restaurantService.loadLogoImage(this.currentRestaurant);
   }
 
   handleFileInput(event: Event) {

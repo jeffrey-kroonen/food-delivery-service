@@ -129,4 +129,28 @@ class RestaurantController extends Controller
             return response()->json(['message' => 'An error occurred while fetching the product category list.', 500]);
         }
     }
+
+    public function uploadLogoImage(Request $request, int $id) 
+    {
+        $file = $request->file('image');
+
+        $fileName = bin2hex(random_bytes(5)) . '.' .  $file->getClientOriginalExtension();
+
+        $path = public_path('img') . '/' . $fileName;
+        $file->move(public_path('img'), $fileName);
+
+        $restaurant = Restaurant::find($id);
+        $restaurant->logo_image_url = $path;
+        $restaurant->save();
+        
+        return response()->json([
+            'message' => 'Successfully uploaded new logo image.',
+            'path' => url('/img/' . $fileName)
+        ]);
+    }
+
+    public function loadLogoImage($fileName)
+    {
+        return response()->json(['path' => url('/img/' . $fileName)]);
+    }
 }

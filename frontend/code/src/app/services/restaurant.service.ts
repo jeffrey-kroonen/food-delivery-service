@@ -34,7 +34,16 @@ export class RestaurantService {
     return this.httpClient.get<GetResponseProductCategoryList>(apiUrl);
   }
 
-  loadLogoImage(fileName: string) {
+  parseToImageFileName(restaurant: Restaurant): string {
+    // Get file name.
+    const logoImageUrlSubsets = restaurant.logo_image_url.split('/');
+    const fileName = logoImageUrlSubsets.pop() || '';
+
+    return fileName;
+  }
+
+  loadLogoImage(restaurant: Restaurant) {
+    const fileName = this.parseToImageFileName(restaurant);
     const apiUrl = `${environment.backendBaseUrl}/public/images/${fileName}`
 
     this.httpClient.get<{path: string}>(apiUrl).subscribe(
@@ -42,6 +51,21 @@ export class RestaurantService {
         this.logoImageUrl.next(data.path)
       }
     );
+  }
+
+  loadLogoImages(restaurants: Restaurant[]) {
+    let logoImageUrls: string[] = [];
+
+    for (let restaurant of restaurants) {
+      const fileName = this.parseToImageFileName(restaurant);
+      const apiUrl = `${environment.backendBaseUrl}/public/images/${fileName}`
+
+      this.httpClient.get<{path: string}>(apiUrl).subscribe(
+        data => logoImageUrls.push(data.path)
+      );
+    }
+
+    return logoImageUrls;
   }
 
   uploadLogoImage(restaurantId: number, file: File) {
