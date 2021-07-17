@@ -12,6 +12,8 @@ import { LocationComponent } from './components/location/location.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { registerLocaleData } from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
+import { ManageRestaurantComponent } from './components/manage-restaurant/manage-restaurant.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeNl, 'nl');
 
@@ -23,11 +25,13 @@ registerLocaleData(localeNl, 'nl');
     RestaurantFiltersComponent,
     RestaurantProductsComponent,
     LocationComponent,
-    AdminComponent
+    AdminComponent,
+    ManageRestaurantComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],

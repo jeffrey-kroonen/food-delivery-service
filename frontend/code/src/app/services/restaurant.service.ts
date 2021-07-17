@@ -84,11 +84,21 @@ export class RestaurantService {
     return this.httpClient.post<{message: string, path:string}>(apiUrl, formData, {headers: headers}).subscribe(
       data => {
         this.logoImageUrl.next(data.path);
-        console.log(JSON.stringify(data));
       }
     );
   }
   
+  updateRestaurant(restaurantId: number, restaurant: Restaurant) {
+    const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
+
+    // Headers
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Accept', 'application/json');
+
+    return this.httpClient.put<Restaurant>(apiUrl, restaurant, {headers: headers});
+  }
+
   handleMetricPreference(restaurantId: number, metricyPreference: string) {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
