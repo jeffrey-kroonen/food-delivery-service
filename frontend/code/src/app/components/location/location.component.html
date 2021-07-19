@@ -1,8 +1,9 @@
 <form class="d-flex">
     <span class="input-group-text input--materialized input--materialized-dark"><i class="fas fa-map-marker-alt"></i></span>
-    <input class="form-control me-2 input--materialized input--materialized-dark" type="search" value="{{ addressString }}" placeholder="Zoeken naar adres" aria-label="Search" (keyup)="getLocationByQuery($event)">
+    <input class="form-control me-2 input--materialized input--materialized-dark" type="search" value="{{ addressString }}" placeholder="Zoeken naar adres" aria-label="Search" (keyup)="getLocationByQuery($event)"
+    (focusout)="handleFocusoutClickEvent()">
 </form>
 
 <ul class="list-group navigation-suggestion-list" *ngIf="addressSuggestions.length > 0">
     <li class="list-group-item navigation-suggestion-item" *ngFor="let addressSuggestion of addressSuggestions" (click)="handleLocationChange(addressSuggestion)">{{ addressToString(addressSuggestion) }}</li>
-  </ul>
+</ul>

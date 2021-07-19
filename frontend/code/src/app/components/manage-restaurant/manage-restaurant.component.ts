@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { race } from 'rxjs';
+import { Address } from 'src/app/models/address';
+import { Coordinates } from 'src/app/models/coordinates';
 import { Restaurant } from 'src/app/models/restaurant';
+import { LocationService } from 'src/app/services/location.service';
 import { RestaurantService } from 'src/app/services/restaurant.service';
 
 @Component({
@@ -11,13 +14,21 @@ import { RestaurantService } from 'src/app/services/restaurant.service';
 })
 export class ManageRestaurantComponent implements OnInit {
 
+  timeout: any = null;
+
   currentRestaurant!: Restaurant;
+
+  currentAddress!: Address;
+
+  currentAddressString!: string;
 
   logoImageUrl!: string;
 
   minuteRange: number[] = [];
 
-  submitNotifcation!: string|undefined;
+  formSubmitNotification!: string|undefined;
+
+  addressSubmitNotification!: string|undefined;
 
   restaurantDetailsForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -28,7 +39,10 @@ export class ManageRestaurantComponent implements OnInit {
     delivery_radius: new FormControl('', Validators.required)
   });
 
-  constructor(private restaurantService: RestaurantService) { }
+  addressSuggestions: Address[] = [];
+
+  constructor(private restaurantService: RestaurantService,
+              private locationService: LocationService) { }
 
   ngOnInit(): void {
     this.restaurantService.getRestaurant(1).subscribe(
@@ -38,6 +52,7 @@ export class ManageRestaurantComponent implements OnInit {
         this.updateLogoImageUrl();
         this.generateMinutes();
         this.restaurantDetailsForm.patchValue(this.currentRestaurant);
+        this.getAddressByCoordinatesFromRestaurant();
       }
     );
   }
@@ -117,18 +132,96 @@ export class ManageRestaurantComponent implements OnInit {
     // Update the restaurant with the new values.
     this.restaurantService.updateRestaurant(this.currentRestaurant.id, this.currentRestaurant).subscribe(
       data => {
-        this.submitNotification();
+        this.handleFormSubmitNotification();
       }
     );
   }
-  submitNotification() {
-    this.submitNotifcation = 'De velden zijn bijgewerkt.';
 
-    console.log(this.submitNotifcation);
+  handleFormSubmitNotification() {
+    this.formSubmitNotification = 'De velden zijn bijgewerkt.';
 
     setTimeout(() => {
-      this.submitNotifcation = undefined;
+      this.formSubmitNotification = undefined;
     }, 2000);
+  }
+
+  handleAddressSubmitNotifcation() {
+    this.addressSubmitNotification = 'Het adres is bijgewerkt.';
+
+    setTimeout(() => {
+      this.addressSubmitNotification = undefined;
+    }, 2000);
+  }
+
+  private getAddressByCoordinatesFromRestaurant(): Address|void {
+    const coordinates = {latitude: this.currentRestaurant.latitude, longitude: this.currentRestaurant.longitude} as Coordinates;
+    this.locationService.getLocation(coordinates).subscribe(
+      data => {
+        this.currentAddress = data;
+        this.currentAddressString = this.addressToString(this.currentAddress);
+        return this.currentAddress;
+      }
+    );
+  }
+
+  getLocationByQuery(event: Event) {
+    // Clear timeout
+    clearTimeout(this.timeout);
+    // Set new timeout value, so that the method waits till 
+    // the first event trigger is finished.
+    this.timeout = setTimeout(() => {
+      const target = event.target as HTMLInputElement;
+      // Retrieve the location collection by user input.
+      if (target.value.length > 3) {
+        this.locationService.getCollectionLocationsByQuery(target.value).subscribe(
+          data => {
+            // Validate the data that is received from Location IQ API.
+            const validAddresses = data.filter(address => {
+              if (null != address.street_name &&
+                  null != address.street_number &&
+                  null != address.postal_code &&
+                  null != address.city)
+                  {
+                    return true;
+                  }
+                  return false;
+            });
+
+            this.addressSuggestions = validAddresses;            
+          }, error => {
+            // TODO Log error message.
+          }
+        );
+      } else {
+        this.addressSuggestions = [];
+      }
+      
+    }, 600);
+  }
+
+  addressToStringSuggestions(address: Address) {
+    return `${address.street_name} ${address.street_number}, ${address.postal_code} ${address.city}`;
+  }
+
+  addressToString(address: Address) {
+    return `${address.street_name} ${address.street_number}`;
+  }
+
+  handleLocationChange(address: Address) {
+    this.currentRestaurant.latitude = address.coordinates.latitude;
+    this.currentRestaurant.longitude = address.coordinates.longitude;
+    this.restaurantService.updateRestaurant(this.currentRestaurant.id, this.currentRestaurant).subscribe(
+      data => {
+        this.currentAddress = address;
+        this.currentAddressString = this.addressToString(address);
+        this.addressSuggestions = [];
+        this.handleAddressSubmitNotifcation();
+      }
+    );
+  }
+
+  handleFocusoutClickEvent() {
+    window.setTimeout(() => { this.addressSuggestions = [] }, 600);
   }
 
 }

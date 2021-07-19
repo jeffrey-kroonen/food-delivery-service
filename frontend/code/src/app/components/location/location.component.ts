@@ -57,7 +57,13 @@ export class LocationComponent implements OnInit {
   }
 
   addressToString(address: Address) {
-    return `${address.street_name} ${address.street_number}, ${address.city}`;
+    let string = address.street_name;
+    string += address.street_number != null ? ' ' + address.street_number : '';
+    string += address.postal_code != null ? ', ' + address.postal_code : '';
+    string += address.city != null && address.postal_code != null ? ' ' + address.city : '';
+    string += address.city != null && address.postal_code == null ? ', ' + address.city : '';
+
+    return string;
   }
 
   getLocationByQuery(event: Event) {
@@ -71,10 +77,19 @@ export class LocationComponent implements OnInit {
       if (target.value.length > 3) {
         this.locationService.getCollectionLocationsByQuery(target.value).subscribe(
           data => {
-            if (data[0].street_number != null) {
-              this.addressSuggestions = data;
-            }
-            
+            // Validate the data that is received from Location IQ API.
+            const validAddresses = data.filter(address => {
+              if (null != address.street_name &&
+                  null != address.street_number &&
+                  null != address.postal_code &&
+                  null != address.city)
+                  {
+                    return true;
+                  }
+                  return false;
+            });
+
+            this.addressSuggestions = validAddresses;            
           }, error => {
             // TODO Log error message.
           }
@@ -91,6 +106,10 @@ export class LocationComponent implements OnInit {
     this.addressString = this.addressToString(this.address);
     this.setLocationInLocalStorage(this.address);
     this.addressSuggestions = [];
+  }
+
+  handleFocusoutClickEvent() {
+    window.setTimeout(() => { this.addressSuggestions = [] }, 600);
   }
 
 }

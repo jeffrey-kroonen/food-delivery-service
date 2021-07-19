@@ -112,9 +112,9 @@
                         <!-- END SUBMIT BUTTON -->
 
                         <!-- FORM NOTIFICATION -->
-                        <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="submitNotifcation != undefined">
+                        <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="formSubmitNotification != undefined">
                             <i class="fas fa-check-circle"></i>
-                            {{ submitNotifcation }}
+                            {{ formSubmitNotification }}
                         </div>
                         <!-- END FORM NOTIFICATION -->
                     </form>
@@ -127,14 +127,64 @@
         </div>
 
         <div class="col-lg-4">
-
-            <div class="card rounded-0 card-sharp h-100" (click)="file.click()" style="max-height: 300px;">
-                <div class="card-body d-flex flex-wrap align-items-center mx-auto">
-                    <img src="{{ logoImageUrl }}" alt="Restaurant logo" style="max-width: 14rem;">
+            
+            <!-- RESTAURANT LOGO IMAGE -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card rounded-0 card-sharp" (click)="file.click()" style="max-height: 300px;">
+                        <div class="card-body d-flex flex-wrap align-items-center mx-auto">
+                            <img src="{{ logoImageUrl }}" alt="Restaurant logo" style="max-width: 14rem;">
+                        </div>
+                        <input type="file" #file accept="image/*" id="fileToUpload" style="display: none;" (change)="handleFileInput($event)">
+                    </div>
                 </div>
             </div>
+            <!-- END RESTAURANT LOGO IMAGE -->
 
-            <input type="file" #file accept="image/*" id="fileToUpload" style="display: none;" (change)="handleFileInput($event)">
+            <!-- RESTAURANT ADDRESS -->
+            <div class="row mt-2">
+                <div class="col-lg-12">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                            
+                            <!-- SERCH INPUT -->
+                            <div class="mb-3">
+                                <label for="inputAddress" class="form-label"><strong>Adres</strong></label>
+                                <input type="search" id="inputAddress" class="form-control" placeholder="Voer een adres in.."
+                                (keyup)="getLocationByQuery($event)" [value]="currentAddress != undefined ? addressToString(currentAddress) : ''"
+                                (focusout)="handleFocusoutClickEvent()">
+
+                                <ul class="list-group address-suggestion-list" *ngIf="addressSuggestions.length > 0">
+                                    <li class="list-group-item address-suggestion-item" *ngFor="let addressSuggestion of addressSuggestions" (click)="handleLocationChange(addressSuggestion)">{{ addressToStringSuggestions(addressSuggestion) }}</li>
+                                </ul>
+                            </div>
+                            <!-- END SERCH INPUT -->
+                            <hr>
+
+                            <div class="mb-3">
+                                <label for="readonlyInputPostalCode" class="form-label">Postcode</label>
+                                <input type="text" id="readonlyInputPostalCode" class="form-control" aria-label="readonly postal code" readonly [value]="currentAddress != undefined ? currentAddress.postal_code : ''">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="readonlyInputCity" class="form-label">Woonplaats</label>
+                                <input type="text" id="readonlyInputCity" class="form-control" aria-label="readonly city" readonly 
+                                [value]="currentAddress != undefined ? currentAddress.city : ''">
+                            </div>
+
+                            <!-- FORM NOTIFICATION -->
+                            <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="addressSubmitNotification != undefined">
+                                <i class="fas fa-check-circle"></i>
+                                {{ addressSubmitNotification }}
+                            </div>
+                            <!-- END FORM NOTIFICATION -->
+
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <!-- END RESTAURANT ADDRESS -->
+
         </div>
         <!-- END RESTAURANT DATA-->
     </div>

@@ -8,9 +8,9 @@ export class Restaurant {
 
     logo_image_url!: string;
 
-    latitude!: string;
+    latitude!: number;
 
-    longitude!: string;
+    longitude!: number;
 
     is_active!: boolean;
 

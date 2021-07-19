@@ -1,0 +1,10 @@
+.address-suggestion-list {
+    position: absolute;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    z-index: 2;
+}
+
+.address-suggestion-item:hover {
+    cursor: pointer;
+    background: #f2f7ff;
+}
