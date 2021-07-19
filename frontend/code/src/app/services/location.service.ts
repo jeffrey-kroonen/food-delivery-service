@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { GetResponseAddress } from '../interfaces/get-response-address';
+import { Address } from '../models/address';
+import { Coordinates } from '../models/coordinates';
 
 @Injectable({
   providedIn: 'root'
@@ -12,24 +13,12 @@ export class LocationService {
   constructor(private httpClient: HttpClient) { }
 
   /**
-   * Retrieve address data from backend service. 
-   * 
-   * @param coordinates 
-   * @returns 
-   */
-  getLocation(coordinates: Object): Observable<GetResponseAddress> {
-    const apiUrl = `${environment.backendBaseUrl}/location/reverse`;
-
-    return this.httpClient.post<GetResponseAddress>(apiUrl, coordinates);
-  }
-
-  /**
    * Retrieve the longitude and latitude of 
    * the users current location.
    * 
    * @returns Promise
    */
-  getPosition(): Promise<any> {
+   getPosition(): Promise<any> {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resp => {
         resolve({
@@ -42,6 +31,24 @@ export class LocationService {
       }
       );
     });
+  }
+
+  /**
+   * Retrieve address data from backend service by coordinates. 
+   * 
+   * @param coordinates 
+   * @returns 
+   */
+  getLocation(coordinates: Coordinates): Observable<Address> {
+    const apiUrl = `${environment.backendBaseUrl}/location/reverse`;
+
+    return this.httpClient.post<Address>(apiUrl, coordinates);
+  }
+
+  getCollectionLocationsByQuery(keywords: string): Observable<Address[]> {
+    const apiUrl = `${environment.backendBaseUrl}/location/query`;
+
+    return this.httpClient.post<Address[]>(apiUrl, {keywords: keywords});
   }
 
 }

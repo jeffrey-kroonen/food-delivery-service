@@ -33,6 +33,7 @@ Route::post('restaurants/{id}/upload/logo-image', [RestaurantController::class, 
 
 // Location
 Route::post('location/reverse', [LocationController::class, 'getLocationFromCoordinates']);
+Route::post('location/query', [LocationController::class, 'getCoordinatesByQuery']);
 
 // Public
 Route::get('public/images/{fileName}', [RestaurantController::class, 'loadLogoImage']);

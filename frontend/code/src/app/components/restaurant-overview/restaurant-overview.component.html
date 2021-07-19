@@ -42,9 +42,9 @@
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <div class="d-flex justify-content-start ">
-                                        <small class="me-3"><i class="far fa-clock "></i> Gemiddelde bezorgtijd</small>
-                                        <small class="me-3"><i class="fas fa-biking"></i> Transport kosten</small>
-                                        <small class=""><i class="fas fa-shopping-bag"></i> Minimaal bestel bedrag</small>
+                                        <small class="me-3"><i class="far fa-clock "></i> {{ restaurant.average_delivery_time }} minuten</small>
+                                        <small class="me-3"><i class="fas fa-biking"></i> {{ restaurant.delivery_charge | currency:'EUR' }}</small>
+                                        <small class=""><i class="fas fa-shopping-bag"></i> {{ restaurant.minimum_order_amount | currency:'EUR' }}</small>
                                     </div>
                                 </div>                                
                                 <!-- <div class="col-md-4"><small><i class="far fa-clock"></i> Gemiddelde bezorgtijd</small></div>

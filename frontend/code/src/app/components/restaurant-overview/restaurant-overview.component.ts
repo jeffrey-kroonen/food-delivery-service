@@ -28,7 +28,6 @@ export class RestaurantOverviewComponent implements OnInit {
       data => {
         this.restaurants = data;
         this.logoImageUrls = this.restaurantService.loadLogoImages(this.restaurants);
-        console.log(this.logoImageUrls);
       }
     );
   }

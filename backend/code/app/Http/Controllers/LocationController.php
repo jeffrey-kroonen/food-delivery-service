@@ -33,4 +33,29 @@ class LocationController extends Controller
         return response()->json(['message' => 'No valid fields sent'], 400)
                     ->header('Content-Type', 'application/json');
     }
+
+    /**
+     * Display a collection of locations from Location IQ.
+     *
+     * @param \Illuminate\Http\Request   $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getCoordinatesByQuery(Request $request)
+    {
+        $keywords = $request->input('keywords');
+
+        $locationCollection = $this->locationService->geocode($keywords);
+        
+        if (!$locationCollection->isEmpty()) {
+            $data = [];
+
+            foreach ($locationCollection as $location) {
+                $data[] = $this->locationService->formatAddress($location);
+            }
+            
+            return response()->json($data);
+        }
+
+        return response()->json([]);
+    }
 }

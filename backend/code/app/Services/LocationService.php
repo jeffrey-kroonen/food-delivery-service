@@ -8,7 +8,6 @@ use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle6\Client as HttpClient;
-use Illuminate\Support\Facades\App;
 
 class LocationService
 {
@@ -30,7 +29,7 @@ class LocationService
      * Retrieve location with given query.
      *
      * @param string $query
-     * @return Location[]
+     * @return Collection[]
      */
     public function geocode(string $query)
     {
@@ -43,7 +42,7 @@ class LocationService
      *
      * @param float $latitude
      * @param float $longitude
-     * @return Location[]
+     * @return Collection[]
      */
     public function reverseGeocode(float $latitude, float $longitude)
     {
@@ -60,8 +59,13 @@ class LocationService
     public function formatAddress(Location $location)
     {
         $country = $location->getCountry();
+        $coordinates = $location->getCoordinates();
 
         return [
+            'coordinates' => [
+                'latitude' => $coordinates->getLatitude(),
+                'longitude' => $coordinates->getLongitude()
+            ],
             'street_number' => $location->getStreetNumber(),
             'street_name' => $location->getStreetName(),
             'city' => $location->getLocality(),

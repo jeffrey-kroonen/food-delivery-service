@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-/**
- * Card Sharp
- *
- * Customize style of cards that displays data.
- */
+/* Card */
+
+/* Card Sharp - Customize style of cards that displays data. */
  .card-sharp:hover {
     cursor: pointer;
     background: #f2f7ff !important;
@@ -13,4 +11,15 @@
 
 .card-sharp:not(:last-child) {
     margin-bottom: 2rem;
+}
+
+/* Selection */
+::selection {
+    color: #fff !important;
+    background: #555 !important;
+}
+
+::-moz-selection {
+    color: #fff !important;
+    background: #555 !important;
 }
