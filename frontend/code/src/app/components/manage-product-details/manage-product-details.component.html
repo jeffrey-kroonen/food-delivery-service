@@ -1,0 +1,119 @@
+<div class="container my-5">
+
+    <div class="row mb-2">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="h3">Product details</h2>
+                <div *ngIf="loadedProduct">
+                    <app-manage-product-delete [product]=product></app-manage-product-delete>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DATA -->
+    <div class="row">
+
+        <div class="col-lg-8">
+            <div class="card rounded-0">
+                <div class="card-body">
+                    <!-- FORM -->
+                    <form [formGroup]="productDetailsForm" (ngSubmit)="handleProductDetailsFormSubmit()">
+                        <!-- PRODUCT NAME INPUT -->
+                        <div class="mb-3">
+                            <label for="inputProductName" class="form-label">Product naam</label>
+                            <input type="text" id="inputProductName" class="form-control" formControlName="name">
+                        </div>
+                        <!-- END PRODUCT NAME INPUT -->
+
+                        <!-- PRODUCT DESCRIPTION TEXTAREA -->
+                        <div class="mb-3">
+                            <label for="textareaProductDescription" class="form-label">Product omschrijving</label>
+                            <textarea id="textareaProductDescription" class="form-control" rows="3" formControlName="description"></textarea>
+                        </div>
+                        <!-- END PRODUCT DESCRIPTION TEXTAREA -->
+
+                        <!-- PRODUCT PRICE PER UNIT INPUT -->
+                        <div class="mb-3">
+                            <label for="inputProductPricePerUnit" class="form-label">Prijs per stuk</label>
+                            <div class="input-group" *ngIf="restaurant?.currency == 'EUR'">
+                                <span class="input-group-text" id="symbolInputProductPricePerUnit">&euro;</span>
+                                <input type="text" class="form-control" id="inputProductPricePerUnit" aria-describedby="symbolInputProductPricePerUnit" formControlName="price_per_unit" pattern="^(\d+(?:\.\d+)?)$">                                
+                            </div>
+                            <div class="input-group" *ngIf="restaurant?.currency == 'USD'">
+                                <span class="input-group-text" id="symbolInputProductPricePerUnit">&#36;</span>
+                                <input type="text" class="form-control" id="inputProductPricePerUnit" aria-describedby="symbolInputProductPricePerUnit" pattern="^(\d+(?:\.\d+)?)$" [value]="product?.price_per_unit">
+                            </div>
+                        </div>
+                        <!-- END PRODUCT PRICE PER UNIT INPUT -->
+
+                        <!-- PRODUCTCATEGORY SELECT-->
+                        <div class="mb-3">
+                            <label for="selectProductCategory" class="form-label">Productcategorie</label>
+                            <select id="selectProductCategory" class="form-select" formControlName="product_category_id">
+                                <option *ngIf="product?.product_category_id == null" value="" selected>Selecteer een productcategorie..</option>
+                                <option *ngFor="let productCategory of productCategories" [value]="productCategory.id"
+                                [selected]="product?.product_category_id != null && product?.product_category_id == productCategory.id">{{ productCategory.name }}</option>
+                            </select>
+                        </div>
+                        <!-- END PRODUCTCATEGORY SELECT-->
+
+                        <!-- PRODUCT IN STOCK CHECKBOX -->
+                        <div class="mb-3">
+                            <input type="checkbox" id="inputCheckInStock" class="form-check-input" formControlName="in_stock">
+                            <label for="inputCheckInStock" class="form-check-label">&nbsp;Op voorraad?</label>&nbsp;
+                            <i class="far fa-question-circle" placement="bottom" ngbTooltip="Wanneer je niet meer de juiste ingrediënten op voorraad heb om dit product te kunnen maken, kun je dat hier aangeven."></i>
+                        </div>
+                        <!-- END PRODUCT IN STOCK CHECKBOX -->
+
+                        <!-- PRODUCT IS ACTIVE CHECKBOX -->
+                        <div class="mb-3">
+                            <input type="checkbox" id="inputCheckIsActive" class="form-check-input" formControlName="is_active">
+                            <label for="inputCheckIsActive" class="form-check-label">&nbsp;Actief?</label>&nbsp;
+                            <i class="far fa-question-circle" placement="bottom" ngbTooltip="Toon of verberg dit product aan jouw restaurant bezoekers."></i>
+                        </div>
+                        <!-- END PRODUCT IS ACTIVE CHECKBOX -->
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="mb-3">
+                            <button [disabled]="!productDetailsForm.valid" type="submit" class="btn btn-primary">Bijwerken</button>
+                        </div>
+                        <!-- END SUBMIT BUTTON -->
+                        
+                        <!-- FORM NOTIFICATION -->
+                        <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="formSubmitNotification != undefined">
+                            <i class="fas fa-check-circle"></i>
+                            {{ formSubmitNotification }}
+                        </div>
+                        <!-- END FORM NOTIFICATION -->
+
+                    </form>
+                    <!-- END FORM -->
+
+                    <small class="text-muted">Aangemaakt op: {{ product?.created_at | date:'dd/MM/Y H:m:ss' }}</small>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+
+            <!-- PRODUCT IMAGE -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card rounded-0 card-sharp" (click)="file.click()" style="max-height: 300px;">
+                        <div class="card-body d-flex flex-wrap align-items-center mx-auto">
+                            <img src="{{ productImageUrl }}" alt="Product afbeelding" style="max-width: 14rem;">
+                        </div>
+                        <input type="file" #file accept="image/*" id="fileToUpload" style="display: none;" (change)="handleFileInput($event)">
+                    </div>
+                </div>
+            </div>
+            <!-- END PRODUCT IMAGE -->
+
+        </div>
+
+    </div>
+    <!-- END PRODUCT DATA -->
+
+</div>

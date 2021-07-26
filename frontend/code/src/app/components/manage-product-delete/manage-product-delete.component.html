@@ -1,0 +1,19 @@
+<!-- TRIGGER DELETE MODAL BUTTON-->
+<button class="btn btn-danger" (click)="open(content)"><i class="fas fa-trash-alt"></i> Verwijderen</button>
+<!-- END TRIGGER DELETE MODAL BUTTON-->
+
+<!-- CONFIRM DELETION MODAL-->
+<ng-template #content let-modal class="modal-content" tabindex="-1">
+    <div class="modal-header">
+        <h5 class="modal-title" id="product-details-delete">Product verwijderen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p>Weet je zeker dat je dit product wilt verwijderen?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss('cancel click')">Annuleren</button>
+        <button type="button" class="btn btn-danger" (click)="deleteProduct()">Verwijderen</button>
+    </div>
+</ng-template>
+<!-- END CONFIRM DELETION MODAL-->

@@ -1,0 +1,94 @@
+<div class="container my-5">
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 class="h3">Product toevoegen</h2>
+        </div>
+    </div>
+
+    <!-- PRODUCT DATA -->
+    <div class="row">
+
+        <div class="col-lg-8">
+            <div class="card rounded-0">
+                <div class="card-body">
+                    <!-- FORM -->
+                    <form [formGroup]="productCreateForm" (ngSubmit)="handleProductCreateFormSubmit()">
+                        <!-- PRODUCT NAME INPUT -->
+                        <div class="mb-3">
+                            <label for="inputProductName" class="form-label">Product naam</label>
+                            <input type="text" id="inputProductName" class="form-control" formControlName="name" placeholder="Voer een naam in.">
+                        </div>
+                        <!-- END PRODUCT NAME INPUT -->
+
+                        <!-- PRODUCT DESCRIPTION TEXTAREA -->
+                        <div class="mb-3">
+                            <label for="textareaProductDescription" class="form-label">Product omschrijving</label>
+                            <textarea id="textareaProductDescription" class="form-control" rows="3" formControlName="description" placeholder="Voer een beschrijving in."></textarea>
+                        </div>
+                        <!-- END PRODUCT DESCRIPTION TEXTAREA -->
+
+                        <!-- PRODUCT PRICE PER UNIT INPUT -->
+                        <div class="mb-3">
+                            <label for="inputProductPricePerUnit" class="form-label">Prijs per stuk</label>
+                            <div class="input-group" *ngIf="restaurant?.currency == 'EUR'">
+                                <span class="input-group-text" id="symbolInputProductPricePerUnit">&euro;</span>
+                                <input type="text" class="form-control" id="inputProductPricePerUnit" aria-describedby="symbolInputProductPricePerUnit" formControlName="price_per_unit" pattern="^(\d+(?:\.\d+)?)$" placeholder="Voer een prijs in.">                                
+                            </div>
+                            <div class="input-group" *ngIf="restaurant?.currency == 'USD'">
+                                <span class="input-group-text" id="symbolInputProductPricePerUnit">&#36;</span>
+                                <input type="text" class="form-control" id="inputProductPricePerUnit" aria-describedby="symbolInputProductPricePerUnit" pattern="^(\d+(?:\.\d+)?)$" [value]="product?.price_per_unit" placeholder="Voer een prijs in.">
+                            </div>
+                        </div>
+                        <!-- END PRODUCT PRICE PER UNIT INPUT -->
+
+                        <!-- PRODUCTCATEGORY SELECT-->
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="selectProductCategory" class="form-label">Productcategorie</label>
+                                </div>
+                            </div>
+                            <div class="row gy-2">
+                                <div class="col-xl-8">
+                                    <select id="selectProductCategory" class="form-select" formControlName="product_category_id">
+                                        <option value="" selected>Selecteer een productcategorie..</option>
+                                        <option *ngFor="let productCategory of productCategories" [value]="productCategory.id">{{ productCategory.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-4">
+                                    <app-manage-product-category-create [restaurant]="restaurant"></app-manage-product-category-create>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- END PRODUCTCATEGORY SELECT-->
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="mb-3">
+                            <button type="submit" [disabled]="!productCreateForm.valid" type="submit" class="btn btn-primary">Toevoegen</button>
+                        </div>
+                        <!-- END SUBMIT BUTTON -->
+                        
+                        <!-- FORM NOTIFICATION -->
+                        <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="formSubmitNotification != undefined">
+                            <i class="fas fa-check-circle"></i>
+                            {{ formSubmitNotification }}
+                        </div>
+                        <!-- END FORM NOTIFICATION -->
+
+                    </form>
+                    <!-- END FORM -->
+
+                    <small class="text-muted">Je kunt na het aanmaken van het product een afbeelding toevoegen.</small>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4"></div>
+
+    </div>
+    <!-- END PRODUCT DATA -->
+
+</div>

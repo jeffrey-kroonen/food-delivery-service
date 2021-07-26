@@ -23,3 +23,12 @@
     color: #fff !important;
     background: #555 !important;
 }
+
+/* Cursor */
+.cursor-link:hover {
+    cursor: pointer;
+}
+
+.cursor-default:hover {
+    cursor: default;
+}

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { race } from 'rxjs';
+import { race, Subject } from 'rxjs';
 import { Address } from 'src/app/models/address';
 import { Coordinates } from 'src/app/models/coordinates';
 import { Restaurant } from 'src/app/models/restaurant';
@@ -16,7 +16,7 @@ export class ManageRestaurantComponent implements OnInit {
 
   timeout: any = null;
 
-  currentRestaurant!: Restaurant;
+  restaurant: Restaurant = new Restaurant();
 
   currentAddress!: Address;
 
@@ -29,6 +29,8 @@ export class ManageRestaurantComponent implements OnInit {
   formSubmitNotification!: string|undefined;
 
   addressSubmitNotification!: string|undefined;
+
+  loadRestaurantProductsComponent: boolean = false;
 
   restaurantDetailsForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -45,19 +47,31 @@ export class ManageRestaurantComponent implements OnInit {
               private locationService: LocationService) { }
 
   ngOnInit(): void {
-    this.restaurantService.getRestaurant(1).subscribe(
-      data => {
-        this.currentRestaurant = data;
-        this.handleRetrieveLogoImage();
-        this.updateLogoImageUrl();
-        this.generateMinutes();
-        this.restaurantDetailsForm.patchValue(this.currentRestaurant);
-        this.getAddressByCoordinatesFromRestaurant();
-      }
-    );
+    this.handleSetRestaurant();
   }
 
-  generateMinutes() {
+  private handleInit(): void {
+    this.handleRetrieveLogoImage();
+    this.updateLogoImageUrl();
+    this.generateMinutes();
+    this.restaurantDetailsForm.patchValue(this.restaurant);
+    this.getAddressByCoordinatesFromRestaurant();
+  }
+
+  handleSetRestaurant(): void {
+    // TODO: Get restaurant id from authenticated user in future.
+    this.restaurantService.getRestaurant(1).subscribe(data => {
+      this.restaurant = data;
+      this.handleInit();
+    });
+  }
+
+  /**
+   * Generate options for average delivery time.
+   * 
+   * @returns void
+   */
+  generateMinutes(): void {
     const steps = 10;
     const iteration = 12;
 
@@ -66,7 +80,13 @@ export class ManageRestaurantComponent implements OnInit {
     }
   }
   
-  updateLogoImageUrl() {
+  /**
+   * Retrieve updates on the restaurant service
+   * poperty logoImageUrl subscription.
+   * 
+   * @returns void
+   */
+  updateLogoImageUrl(): void {
     this.restaurantService.logoImageUrl.subscribe(
         data => {
           this.logoImageUrl = data
@@ -74,70 +94,93 @@ export class ManageRestaurantComponent implements OnInit {
     );
   }
 
+  /**
+   * Update currency of restaurant.
+   * 
+   * @param Event event 
+   */
   handleCurrencyPreference(event: Event) {
     const target = event.target as HTMLInputElement;
     const currencyPreference = target.value;
 
-    if (currencyPreference != this.currentRestaurant.currency) {
-      this.restaurantService.handleCurrencyPreference(this.currentRestaurant.id, currencyPreference).subscribe(
+    if (currencyPreference != this.restaurant.currency) {
+      this.restaurantService.handleCurrencyPreference(this.restaurant.id, currencyPreference).subscribe(
         updatedRestaurant => {
-          this.currentRestaurant = updatedRestaurant;
+          this.restaurant = updatedRestaurant;
         }
       );
     }
     
   }
 
+  /**
+   * Update metric of restaurant.
+   * 
+   * @param Event event 
+   */
   handleMetricPreference(event: Event) {
     const target = event.target as HTMLInputElement;
     const metricPreference = target.value;
 
-    if (metricPreference != this.currentRestaurant.metric) {
-      this.restaurantService.handleMetricPreference(this.currentRestaurant.id, metricPreference).subscribe(
+    if (metricPreference != this.restaurant.metric) {
+      this.restaurantService.handleMetricPreference(this.restaurant.id, metricPreference).subscribe(
         updatedRestaurant => {
-          this.currentRestaurant = updatedRestaurant;
+          this.restaurant = updatedRestaurant;
         }
       );
     }
   }
 
+  /**
+   * Load the logo image of restaurant.
+   * 
+   * @returns void
+   */
   handleRetrieveLogoImage() {
-    this.restaurantService.loadLogoImage(this.currentRestaurant);
+    this.restaurantService.loadLogoImage(this.restaurant);
   }
 
+  /**
+   * Update the logo image of restaurant.
+   * 
+   * @param Event event 
+   */
   handleFileInput(event: Event) {
     // Get file as object.
     const target = event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
 
-    // Get extension of file.
-    const type = file.type.split('/');
-    const extension = type.pop();
-
-    // Generate randsom string
-    let randomString = Math.random().toString(36).substring(5);
-
-    this.restaurantService.uploadLogoImage(this.currentRestaurant.id, file);
+    this.restaurantService.uploadLogoImage(this.restaurant.id, file);
   }
 
-  handleRestaurantDetailsFormSubmit() {
+  /**
+   * Update fields of restaurant after form submition.
+   * 
+   * @returns void
+   */
+  handleRestaurantDetailsFormSubmit(): void {
     const submittedForm = this.restaurantDetailsForm.value;
     // Map new values to current restaurant.
-    this.currentRestaurant.name = submittedForm.name;
-    this.currentRestaurant.description = submittedForm.description;
-    this.currentRestaurant.average_delivery_time = submittedForm.average_delivery_time;
-    this.currentRestaurant.delivery_charge = Number(submittedForm.delivery_charge.toString().replace(',', '.'));
-    this.currentRestaurant.minimum_order_amount = Number(submittedForm.minimum_order_amount.toString().replace(',', '.'));
-    this.currentRestaurant.delivery_radius = Number(submittedForm.delivery_radius.toString().replace(',', '.'));
+    this.restaurant.name = submittedForm.name;
+    this.restaurant.description = submittedForm.description;
+    this.restaurant.average_delivery_time = submittedForm.average_delivery_time;
+    this.restaurant.delivery_charge = Number(submittedForm.delivery_charge.toString().replace(',', '.'));
+    this.restaurant.minimum_order_amount = Number(submittedForm.minimum_order_amount.toString().replace(',', '.'));
+    this.restaurant.delivery_radius = Number(submittedForm.delivery_radius.toString().replace(',', '.'));
     // Update the restaurant with the new values.
-    this.restaurantService.updateRestaurant(this.currentRestaurant.id, this.currentRestaurant).subscribe(
+    this.restaurantService.updateRestaurant(this.restaurant.id, this.restaurant).subscribe(
       data => {
         this.handleFormSubmitNotification();
       }
     );
   }
 
-  handleFormSubmitNotification() {
+  /**
+   * Show user a notification after form submition.
+   * 
+   * @returns void
+   */
+  handleFormSubmitNotification(): void {
     this.formSubmitNotification = 'De velden zijn bijgewerkt.';
 
     setTimeout(() => {
@@ -145,7 +188,12 @@ export class ManageRestaurantComponent implements OnInit {
     }, 2000);
   }
 
-  handleAddressSubmitNotifcation() {
+  /**
+   * Show user a notification after updating address.
+   * 
+   * @returns void
+   */
+  handleAddressSubmitNotifcation(): void {
     this.addressSubmitNotification = 'Het adres is bijgewerkt.';
 
     setTimeout(() => {
@@ -153,8 +201,15 @@ export class ManageRestaurantComponent implements OnInit {
     }, 2000);
   }
 
+  /**
+   * Retrieve address based on coordinates of restaurant.
+   * Set the needed properties.
+   * 
+   * @returns Address|void
+   * @access private
+   */
   private getAddressByCoordinatesFromRestaurant(): Address|void {
-    const coordinates = {latitude: this.currentRestaurant.latitude, longitude: this.currentRestaurant.longitude} as Coordinates;
+    const coordinates = {latitude: this.restaurant.latitude, longitude: this.restaurant.longitude} as Coordinates;
     this.locationService.getLocation(coordinates).subscribe(
       data => {
         this.currentAddress = data;
@@ -164,6 +219,12 @@ export class ManageRestaurantComponent implements OnInit {
     );
   }
 
+  /**
+   * Retrieve location list based on enduser's search query.
+   * 
+   * @param Event event
+   * @returns void 
+   */
   getLocationByQuery(event: Event) {
     // Clear timeout
     clearTimeout(this.timeout);
@@ -199,18 +260,35 @@ export class ManageRestaurantComponent implements OnInit {
     }, 600);
   }
 
+  /**
+   * Return address string.
+   * 
+   * @param address 
+   * @returns string
+   */
   addressToStringSuggestions(address: Address) {
     return `${address.street_name} ${address.street_number}, ${address.postal_code} ${address.city}`;
   }
 
+  /**
+   * Build address string based on API response.
+   * 
+   * @param address 
+   * @returns string
+   */
   addressToString(address: Address) {
     return `${address.street_name} ${address.street_number}`;
   }
 
+  /**
+   * Update properties after location change.
+   * 
+   * @param Address address 
+   */
   handleLocationChange(address: Address) {
-    this.currentRestaurant.latitude = address.coordinates.latitude;
-    this.currentRestaurant.longitude = address.coordinates.longitude;
-    this.restaurantService.updateRestaurant(this.currentRestaurant.id, this.currentRestaurant).subscribe(
+    this.restaurant.latitude = address.coordinates.latitude;
+    this.restaurant.longitude = address.coordinates.longitude;
+    this.restaurantService.updateRestaurant(this.restaurant.id, this.restaurant).subscribe(
       data => {
         this.currentAddress = address;
         this.currentAddressString = this.addressToString(address);
@@ -224,4 +302,12 @@ export class ManageRestaurantComponent implements OnInit {
     window.setTimeout(() => { this.addressSuggestions = [] }, 600);
   }
 
+
+  handleLoadRestaurantProductsComponent() {
+    this.loadRestaurantProductsComponent = true;
+  }
+
+  handleHideRestaurantProductsComponent() {
+    this.loadRestaurantProductsComponent = false;
+  }
 }

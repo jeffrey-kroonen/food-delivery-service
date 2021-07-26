@@ -23,7 +23,12 @@ export class RestaurantOverviewComponent implements OnInit {
     });
   }
 
-  listRestaurants() {
+  /**
+   * Retrieve restaurants.
+   * 
+   * @returns void
+   */
+  listRestaurants(): void {
     this.restaurantService.getRestaurantList().subscribe(
       data => {
         this.restaurants = data;

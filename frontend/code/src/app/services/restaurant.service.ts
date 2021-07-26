@@ -16,24 +16,47 @@ export class RestaurantService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /**
+   * Retrieve restaurant based on id.
+   * 
+   * @param number restaurantId 
+   * @returns Observable<Restaurant>
+   */
   getRestaurant(restaurantId: number): Observable<Restaurant> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
     return this.httpClient.get<Restaurant>(apiUrl);
   }
 
+  /**
+   * Retrieve all restaurants.
+   * 
+   * @returns Observable<Restaurant[]>
+   */
   getRestaurantList(): Observable<Restaurant[]> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants`;
 
     return this.httpClient.get<Restaurant[]>(apiUrl);
   }
 
+  /**
+   * Retrieve products mapped under connected category.
+   * 
+   * @param number restaurantId 
+   * @returns Observable<GetResponseProductCategoryList>
+   */
   getProductsUnderProductCategories(restaurantId: number): Observable<GetResponseProductCategoryList> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}/product-category-list`;
 
     return this.httpClient.get<GetResponseProductCategoryList>(apiUrl);
   }
 
+  /**
+   * Parse image logo url to file name.
+   * 
+   * @param Restaurant restaurant 
+   * @returns string fileName
+   */
   parseToImageFileName(restaurant: Restaurant): string {
     // Get file name.
     const logoImageUrlSubsets = restaurant.logo_image_url.split('/');
@@ -42,6 +65,11 @@ export class RestaurantService {
     return fileName;
   }
 
+  /**
+   * Load logo's.
+   * 
+   * @param Restaurant restaurant 
+   */
   loadLogoImage(restaurant: Restaurant) {
     const fileName = (restaurant.logo_image_url != null) ? this.parseToImageFileName(restaurant) : 'image-placeholder.png';
     const apiUrl = `${environment.backendBaseUrl}/public/images/${fileName}`
@@ -53,6 +81,12 @@ export class RestaurantService {
     );
   }
 
+  /**
+   * Load multiple logo's.
+   * 
+   * @param Restaurant restaurant 
+   * @returns string[] logoImageUrls
+   */
   loadLogoImages(restaurants: Restaurant[]) {
     let logoImageUrls: string[] = [];
 
@@ -68,6 +102,12 @@ export class RestaurantService {
     return logoImageUrls;
   }
 
+  /**
+   * Upload new logo image.
+   * 
+   * @param number restaurantId 
+   * @param File file 
+   */
   uploadLogoImage(restaurantId: number, file: File) {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}/upload/logo-image`
     
@@ -88,7 +128,14 @@ export class RestaurantService {
     );
   }
   
-  updateRestaurant(restaurantId: number, restaurant: Restaurant) {
+  /**
+   * Update restaurant data.
+   * 
+   * @param number restaurantId 
+   * @param Restaurant restaurant 
+   * @returns Observable<Restaurant>
+   */
+  updateRestaurant(restaurantId: number, restaurant: Restaurant): Observable<Restaurant> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
     // Headers
@@ -99,7 +146,14 @@ export class RestaurantService {
     return this.httpClient.put<Restaurant>(apiUrl, restaurant, {headers: headers});
   }
 
-  handleMetricPreference(restaurantId: number, metricyPreference: string) {
+  /**
+   * Update restaurant metric.
+   * 
+   * @param restaurantId 
+   * @param metricyPreference 
+   * @returns Observable<Restaurant>
+   */
+  handleMetricPreference(restaurantId: number, metricyPreference: string): Observable<Restaurant> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
     // Body
@@ -115,7 +169,14 @@ export class RestaurantService {
     return this.httpClient.put<Restaurant>(apiUrl, body, {headers: headers});
   }
 
-  handleCurrencyPreference(restaurantId: number, currencyPreference: string) {
+  /**
+   * Update restaurant currency.
+   * 
+   * @param restaurantId 
+   * @param currencyPreference 
+   * @returns Observable<Restaurant>
+   */
+  handleCurrencyPreference(restaurantId: number, currencyPreference: string): Observable<Restaurant> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurantId}`;
 
     // Body

@@ -1,7 +1,8 @@
-<div class="container mt-5 mb-5">
+<app-manage-navigation></app-manage-navigation>
 
+<div class="container my-5">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <div class="row gy-2">
                 <div class="col-lg-6">
                     <h2 class="h3">Mijn restaurant</h2>
@@ -9,18 +10,18 @@
                 <div class="col-lg-6 mb-2">
                     <div class="d-flex align-items-center justify-content-lg-end">
                         <div class="btn-group me-2" role="group">
-                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-1" class="btn-check" name="currencyPreference" value="EUR" autocomplete="off" [checked]="currentRestaurant?.currency == 'EUR'">
+                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-1" class="btn-check" name="currencyPreference" value="EUR" autocomplete="off" [checked]="restaurant?.currency == 'EUR'">
                             <label for="currency-radio-1" class="btn btn-outline-primary btn-sm">EUR</label>
             
-                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-2" class="btn-check" name="currencyPreference" value="USD" autocomplete="off" [checked]="currentRestaurant?.currency == 'USD'">
+                            <input (click)="handleCurrencyPreference($event)" type="radio" id="currency-radio-2" class="btn-check" name="currencyPreference" value="USD" autocomplete="off" [checked]="restaurant?.currency == 'USD'">
                             <label for="currency-radio-2" class="btn btn-outline-primary btn-sm">USD</label>
                         </div>
 
                         <div class="btn-group" role="group">
-                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-1" class="btn-check" name="metricPreference" value="kilometers" autocomplete="off" [checked]="currentRestaurant?.metric == 'kilometers'">
+                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-1" class="btn-check" name="metricPreference" value="kilometers" autocomplete="off" [checked]="restaurant?.metric == 'kilometers'">
                             <label for="metric-radio-1" class="btn btn-outline-primary btn-sm">Kilometers</label>
             
-                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-2" class="btn-check" name="metricPreference" value="miles" autocomplete="off" [checked]="currentRestaurant?.metric == 'miles'">
+                            <input (click)="handleMetricPreference($event)" type="radio" id="metric-radio-2" class="btn-check" name="metricPreference" value="miles" autocomplete="off" [checked]="restaurant?.metric == 'miles'">
                             <label for="metric-radio-2" class="btn btn-outline-primary btn-sm">Miles</label>
                         </div>
                     </div>
@@ -29,7 +30,7 @@
                 
             </div>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-lg-4"></div>
     </div>
 
     <div class="row gy-2">
@@ -59,7 +60,7 @@
                         <div class="mb-3">
                             <label for="selectAverageDeliveryTime" class="form-label">Gemiddelde levertijd</label>
                             <select id="selectAverageDeliveryTime" class="form-select" formControlName="average_delivery_time" pattern="^[0-9]*$">
-                                <option *ngIf="currentRestaurant?.average_delivery_time == null" selected>Selecteer een tijd..</option>
+                                <option *ngIf="restaurant?.average_delivery_time == null" selected>Selecteer een tijd..</option>
                                 <option *ngFor="let minute of minuteRange" [value]="minute">{{ minute }} minuten</option>
                             </select>
                         </div>
@@ -68,11 +69,11 @@
                         <!-- FORM CONTROL DELIVERY CHARGE-->
                         <div class="mb-3">
                             <label for="inputDeliveryCharge" class="form-label">Bezorgkosten</label>
-                            <div class="input-group" *ngIf="currentRestaurant?.currency == 'EUR'">
+                            <div class="input-group" *ngIf="restaurant?.currency == 'EUR'">
                                 <span class="input-group-text" id="deliver-charge1">&euro;</span>
                                 <input type="text" class="form-control" aria-describedby="deliver-charge1" formControlName="delivery_charge" pattern="^(\d+(?:\.\d+)?)$">                                
                             </div>
-                            <div class="input-group" *ngIf="currentRestaurant?.currency == 'USD'">
+                            <div class="input-group" *ngIf="restaurant?.currency == 'USD'">
                                 <span class="input-group-text" id="minimum-order-amount1">&#36;</span>
                                 <input type="text" class="form-control" aria-describedby="deliver-charge1" formControlName="delivery_charge" pattern="^(\d+(?:\.\d+)?)$">
                             </div>
@@ -82,11 +83,11 @@
                         <!-- FORM CONTROL MINIMUM ORDER AMOUNT -->
                         <div class="mb-3">
                             <label for="inputMinimumOrderAmount" class="form-label">Minimum bestelbedrag</label>
-                            <div class="input-group" *ngIf="currentRestaurant?.currency == 'EUR'">
+                            <div class="input-group" *ngIf="restaurant?.currency == 'EUR'">
                                 <span class="input-group-text" id="minimum-order-amount1">&euro;</span>
                                 <input type="text" class="form-control" id="inputMinimumOrderAmount" aria-describedby="minimum-order-amount1" formControlName="minimum_order_amount" pattern="^(\d+(?:\.\d+)?)$">                                
                             </div>
-                            <div class="input-group" *ngIf="currentRestaurant?.currency == 'USD'">
+                            <div class="input-group" *ngIf="restaurant?.currency == 'USD'">
                                 <span class="input-group-text" id="minimum-order-amount1">&#36;</span>
                                 <input type="text" class="form-control" id="inputMinimumOrderAmount" aria-describedby="minimum-order-amount1" formControlName="minimum_order_amount" pattern="^(\d+(?:\.\d+)?)$">
                             </div>
@@ -99,8 +100,8 @@
                             
                             <div class="input-group">
                                 <input type="text" class="form-control" id="inputDeliveryRadius" aria-describedby="delivery-radius1" formControlName="delivery_radius" pattern="^(\d+(?:\.\d+)?)$">
-                                <span class="input-group-text" id="deliver-radius1" *ngIf="currentRestaurant?.metric == 'kilometers'">kilometer</span>
-                                <span class="input-group-text" id="deliver-radius1" *ngIf="currentRestaurant?.metric == 'miles'">miles</span>
+                                <span class="input-group-text" id="deliver-radius1" *ngIf="restaurant?.metric == 'kilometers'">kilometer</span>
+                                <span class="input-group-text" id="deliver-radius1" *ngIf="restaurant?.metric == 'miles'">miles</span>
                             </div>
                         </div>
                         <!-- END FORM CONTROL DELIVERY RADIUS -->
@@ -120,7 +121,7 @@
                     </form>
                     <!-- END FORM -->
 
-                    <small class="text-muted">Aangemeld sinds: {{ currentRestaurant?.created_at | date:'dd/MM/Y H:m:s' }}</small>
+                    <small class="text-muted">Aangemeld sinds: {{ restaurant?.created_at | date:'dd/MM/Y H:m:ss' }}</small>
 
                 </div>
             </div>
@@ -152,7 +153,7 @@
                                 <label for="inputAddress" class="form-label"><strong>Adres</strong></label>
                                 <input type="search" id="inputAddress" class="form-control" placeholder="Voer een adres in.."
                                 (keyup)="getLocationByQuery($event)" [value]="currentAddress != undefined ? addressToString(currentAddress) : ''"
-                                (focusout)="handleFocusoutClickEvent()">
+                                (focusout)="handleFocusoutClickEvent()" autocomplete="off">
 
                                 <ul class="list-group address-suggestion-list" *ngIf="addressSuggestions.length > 0">
                                     <li class="list-group-item address-suggestion-item" *ngFor="let addressSuggestion of addressSuggestions" (click)="handleLocationChange(addressSuggestion)">{{ addressToStringSuggestions(addressSuggestion) }}</li>

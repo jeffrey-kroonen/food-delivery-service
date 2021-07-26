@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Restaurant } from 'src/app/models/restaurant';
+import { ProductService } from 'src/app/services/product.service';
 import { RestaurantService } from 'src/app/services/restaurant.service';
 
 @Component({
@@ -14,9 +15,12 @@ export class RestaurantProductsComponent implements OnInit {
 
   productCategoryList!: any;
 
+  productImageUrls: any = [];
+
   currentUrl!: string;
 
-  constructor(private restaurantService: RestaurantService,
+  constructor(private productService: ProductService,
+              private restaurantService: RestaurantService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -25,7 +29,12 @@ export class RestaurantProductsComponent implements OnInit {
     });
   }
 
-  handleRestaurantProducts() {
+  /**
+   * Retrieve products ordered by category.
+   * 
+   * @returns void
+   */
+  handleRestaurantProducts(): void {
     const restaurantId: number = Number(this.route.snapshot.paramMap.get('id'));
 
     // Fetch restaurant.
@@ -37,7 +46,7 @@ export class RestaurantProductsComponent implements OnInit {
     // Fetch product category list.
     this.restaurantService.getProductsUnderProductCategories(restaurantId).subscribe(
       data => {
-        this.productCategoryList = data;
+        this.productCategoryList = this.productService.getProductImageUrls(data);
       }
     );
   }

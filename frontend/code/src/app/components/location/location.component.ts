@@ -26,19 +26,35 @@ export class LocationComponent implements OnInit {
     this.initLocation();
   }
 
+  /**
+   * Retrieve location from enduser or retrieve from
+   * localstorage.
+   * 
+   * @return void
+   */
   initLocation(): void {
     if (null === localStorage.getItem('currentAddress')) {
       this.handleGetLocation();
     } else {
       this.getLocationFromLocalStorage();
-      console.log(this.address);
     }
   }
 
+  /**
+   * Set the new given address in localstorage.
+   * 
+   * @param Address address
+   * @return void
+   */
   private setLocationInLocalStorage(address: Address): void {
     localStorage.setItem('currentAddress', JSON.stringify(address));
   }
 
+  /**
+   * Retrieve address from localstorage.
+   * 
+   * @returns Address 
+   */
   private getLocationFromLocalStorage(): Address {
     let currentAddress = JSON.parse(localStorage.getItem('currentAddress') || '{}') as Address;
     this.address = currentAddress;
@@ -46,6 +62,9 @@ export class LocationComponent implements OnInit {
     return this.address;
   }
 
+  /**
+   * Get location from enduser.
+   */
   handleGetLocation(): void {
     this.locationService.getPosition().then(
       coordinates => {
@@ -56,6 +75,12 @@ export class LocationComponent implements OnInit {
     });
   }
 
+  /**
+   * Build address string based on API response.
+   * 
+   * @param address 
+   * @returns string
+   */
   addressToString(address: Address) {
     let string = address.street_name;
     string += address.street_number != null ? ' ' + address.street_number : '';
@@ -66,7 +91,13 @@ export class LocationComponent implements OnInit {
     return string;
   }
 
-  getLocationByQuery(event: Event) {
+  /**
+   * Retrieve location list based on enduser's search query.
+   * 
+   * @param Event event
+   * @returns void 
+   */
+  getLocationByQuery(event: Event): void {
     // Clear timeout
     clearTimeout(this.timeout);
     // Set new timeout value, so that the method waits till 
@@ -101,14 +132,25 @@ export class LocationComponent implements OnInit {
     }, 600);
   }
 
-  handleLocationChange(address: Address) {
+  /**
+   * Update properties after location change.
+   * 
+   * @param Address address 
+   */
+  handleLocationChange(address: Address): void {
     this.address = address;
     this.addressString = this.addressToString(this.address);
     this.setLocationInLocalStorage(this.address);
     this.addressSuggestions = [];
   }
 
-  handleFocusoutClickEvent() {
+  /**
+   * Hold the focusout event to let the
+   * user click on a address suggestion.
+   * 
+   * @returns void
+   */
+  handleFocusoutClickEvent(): void {
     window.setTimeout(() => { this.addressSuggestions = [] }, 600);
   }
 
