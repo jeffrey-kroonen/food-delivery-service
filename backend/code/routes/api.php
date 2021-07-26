@@ -30,6 +30,10 @@ Route::apiResource('product-categories', ProductCategoryController::class);
 // Restaurant
 Route::get('restaurants/{id}/product-category-list', [RestaurantController::class, 'getProductCategoryList']);
 Route::post('restaurants/{id}/upload/logo-image', [RestaurantController::class, 'uploadLogoImage']);
+Route::get('restaurants/{id}/products', [RestaurantController::class, 'getProducts']);
+
+// Product
+Route::post('products/{id}/upload/product-image', [ProductController::class, 'uploadProductImage']);
 
 // Location
 Route::post('location/reverse', [LocationController::class, 'getLocationFromCoordinates']);

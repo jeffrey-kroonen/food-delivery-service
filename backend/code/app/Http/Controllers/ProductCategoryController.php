@@ -28,15 +28,14 @@ class ProductCategoryController extends Controller
         // Validate the posted fields.
         $validatedData = $request->validate([
             'restaurant_id' => 'required|exists:App\Models\Restaurant,id',
-            'name' => 'required|max:255',
-            'image_url' => 'required'
+            'name' => 'required|max:255'
         ]);
 
         // Store new ProductCategory.
         $productCategory = ProductCategory::create([
             'restaurant_id' => $validatedData['restaurant_id'],
             'name' => $validatedData['name'],
-            'image_url' => $validatedData['image_url']
+            'image_url' => $request->image_url ?: '/img/image-placeholder.png'
         ]);
 
         // Return HTTP response to enduser.

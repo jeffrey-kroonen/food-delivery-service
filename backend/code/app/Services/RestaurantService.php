@@ -47,6 +47,5 @@ class RestaurantService
             
         // Return the altered data set.
         return $data;
-
     }
 }

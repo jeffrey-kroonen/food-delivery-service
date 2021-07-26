@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private array $allowedImageFileMimeTypes = [
+        'image/png',
+        'image/jpeg',
+        'image/webp'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +37,6 @@ class ProductController extends Controller
             'product_category_id' => 'required|exists:App\Models\ProductCategory,id',
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'image_url' => 'required|max:255',
             'price_per_unit' => 'required|max:255'
         ]);
 
@@ -41,7 +46,7 @@ class ProductController extends Controller
             'product_category_id' => $validatedData['product_category_id'],
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
-            'image_url' => $validatedData['image_url'],
+            'image_url' => $request->image_url ?: '/img/image-placeholder.png',
             'price_per_unit' => $validatedData['price_per_unit'],
             'sales_price_per_unit' => $request->sales_price_per_unit ?: null,
             'tax_percentage' => $request->tax_percentage ?: 9.00, // Dutch VAT as default.
@@ -106,5 +111,39 @@ class ProductController extends Controller
                     ->noContent();
 
         return response(['message' => 'Resource deleted'], 200);
+    }
+
+    public function uploadProductImage(int $id, Request $request)
+    {
+        $file = $request->file('image');
+
+        // Check if file is an image.
+        if (!in_array($file->getClientMimeType(), $this->allowedImageFileMimeTypes)) {
+            return response()->json(['message' => 'Invalid image file. Must be of type png, jp(e)g or webp'], 400);
+        }
+
+        $fileDoesNotExists = true;
+
+        while ($fileDoesNotExists) {
+            // Generate new file name.
+            $fileName = bin2hex(random_bytes(5)) . '.' .  $file->getClientOriginalExtension();
+            // Define path to file.
+            $path = public_path('img') . '/' . $fileName;
+            // Check if a file with generated new already exists.
+            $fileDoesNotExists = file_exists($path);
+        }
+        // Move the file to local storage.
+        $file->move(public_path('img'), $fileName);
+
+        // Update the product with the new path to product image file.
+        $product = Product::find($id);
+        $product->image_url = '/img/' . $fileName;
+        $product->save();
+
+        // Return a success response.
+        return response()->json([
+            'message' => 'Successfully uploaded new product image.',
+            'path' => url('/img/' . $fileName)
+        ]);
     }
 }

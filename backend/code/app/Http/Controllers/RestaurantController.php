@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Restaurant;
 use App\Services\RestaurantService;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 
 class RestaurantController extends Controller
@@ -110,7 +114,6 @@ class RestaurantController extends Controller
             return response()->json(['message' => 'No valid fields sent'], 400)
                     ->header('Content-Type', 'application/json');
 
-
         $restaurant = Restaurant::find($id);
         $restaurant->update($request->all());
 
@@ -150,6 +153,13 @@ class RestaurantController extends Controller
         }
     }
 
+    /**
+     * Upload an logo image for a restaurant.
+     *
+     * @param Request $request
+     * @param integer $id
+     * @return \Illuminate\Http\Response
+     */
     public function uploadLogoImage(Request $request, int $id) 
     {
         $file = $request->file('image');
@@ -160,7 +170,7 @@ class RestaurantController extends Controller
         $file->move(public_path('img'), $fileName);
 
         $restaurant = Restaurant::find($id);
-        $restaurant->logo_image_url = $path;
+        $restaurant->logo_image_url = '/img/' . $fileName;
         $restaurant->save();
         
         return response()->json([
@@ -169,8 +179,40 @@ class RestaurantController extends Controller
         ]);
     }
 
+    /**
+     * Display logo image by filename.
+     *
+     * @param [type] $fileName
+     * @return void
+     */
     public function loadLogoImage($fileName)
     {
         return response()->json(['path' => url('/img/' . $fileName)]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $id
+     * @return \Illuminate\Http\JsonResponse|Illuminate\Database\Eloquent\Collection
+     */
+    public function getProducts(int $id)
+    {
+        $restaurant = Restaurant::find($id);
+
+        if (null === $restaurant)
+            return response()
+                    ->noContent();
+        
+        // Get products of restaurant.
+        $products = $restaurant->products;
+
+        // Fix url to product image url and add product category.
+        foreach ($products as $product) {
+            $product->image_url = URL::to('/') . $product->image_url;
+            $product->product_category = $product->productCategory;
+        }
+
+        return $products;
     }
 }

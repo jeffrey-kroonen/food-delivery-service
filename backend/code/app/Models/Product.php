@@ -30,10 +30,20 @@ class Product extends Model
     /**
      * Get product category related to the product.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function productCategory()
     {
-        return $this->belongsTo(ProductCategory::class, 'foreign_key');
+        return $this->belongsTo(ProductCategory::class);
+    }
+
+    /**
+     * Get restaurant related to the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
     }
 }
