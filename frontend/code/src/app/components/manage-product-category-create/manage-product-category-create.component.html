@@ -1,27 +1,42 @@
-<!-- TRIGGER CREATE PRODUCT CATEGORY MODAL BUTTON-->
-<button type="button" class="btn btn-secondary w-100" (click)="open(content)"><i class="fas fa-plus"></i> Productcategorie toevoegen</button>
-<!-- END CREATE PRODUCT CATEGORY MODAL BUTTON-->
+<app-manage-navigation></app-manage-navigation>
 
-<!-- CREATE PRODUCT CATEGORY MODAL-->
-<ng-template #content let-modal class="modal-content" tabindex="-1">
-    <div class="modal-header">
-        <h5 class="modal-title" id="product-details-delete">Productcategory toevoegen</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+<div class="container my-5">
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 class="h3">Product toevoegen</h2>
+        </div>
     </div>
-    <div class="modal-body">
-        
-        <!-- TODO: Add form for product category. -->
-        <form [formGroup]="productCategoryCreateForm" id="createProductCategoryForm" (ngSubmit)="handleCreateProductCategoryForm()">
-            <div class="mb-3">
-                <label for="inputProductCategoryName" class="form-label">Naam</label>
-                <input type="text" formControlName="name" id="inputProductCategoryName" class="form-control">
+
+    <!-- PRODUCT DATA -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card rounded-0">
+                <div class="card-body">
+                    <!-- FORM -->
+                    <form [formGroup]="productCategoryCreateForm" id="createProductCategoryForm" (ngSubmit)="handleCreateProductCategoryForm()">
+                        <div class="mb-3">
+                            <label for="inputProductCategoryName" class="form-label">Naam</label>
+                            <input type="text" formControlName="name" id="inputProductCategoryName" class="form-control">
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="mb-3">
+                            <button type="submit" [disabled]="!productCategoryCreateForm.valid" type="submit" class="btn btn-primary">Toevoegen</button>
+                        </div>
+                        <!-- END SUBMIT BUTTON -->
+                        
+                        <!-- FORM NOTIFICATION -->
+                        <div class="alert alert-primary d-inline-block pt-2 pb-2" *ngIf="formSubmitNotification != undefined">
+                            <i class="fas fa-check-circle"></i>
+                            {{ formSubmitNotification }}
+                        </div>
+                        <!-- END FORM NOTIFICATION -->
+                    </form>
+
+                </div>
             </div>
-        </form>
+        </div>
+    </div>
 
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss('cancel click')">Annuleren</button>
-        <button type="submit" class="btn btn-primary" form="createProductCategoryForm" [disabled]="!productCategoryCreateForm.valid">Toevoegen</button>
-    </div>
-</ng-template>
-<!-- END CONFIRM DELETION MODAL-->
+</div>

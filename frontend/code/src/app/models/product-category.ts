@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 export class ProductCategory {
     
     id!: number;
@@ -13,5 +15,7 @@ export class ProductCategory {
     created_at!: Date;
 
     updated_at!: Date;
+
+    products!: Product[];
 
 }

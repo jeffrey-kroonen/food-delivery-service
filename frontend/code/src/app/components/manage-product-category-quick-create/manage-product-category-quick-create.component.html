@@ -1,0 +1,26 @@
+<!-- TRIGGER CREATE PRODUCT CATEGORY MODAL BUTTON-->
+<button type="button" class="btn btn-secondary w-100" (click)="open(content)"><i class="fas fa-plus"></i> Productcategorie toevoegen</button>
+<!-- END CREATE PRODUCT CATEGORY MODAL BUTTON-->
+
+<!-- CREATE PRODUCT CATEGORY MODAL-->
+<ng-template #content let-modal class="modal-content" tabindex="-1">
+    <div class="modal-header">
+        <h5 class="modal-title" id="product-details-delete">Productcategory toevoegen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        
+        <form [formGroup]="productCategoryCreateForm" id="createProductCategoryForm" (ngSubmit)="handleCreateProductCategoryForm()">
+            <div class="mb-3">
+                <label for="inputProductCategoryName" class="form-label">Naam</label>
+                <input type="text" formControlName="name" id="inputProductCategoryName" class="form-control">
+            </div>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss('cancel click')">Annuleren</button>
+        <button type="submit" class="btn btn-primary" form="createProductCategoryForm" [disabled]="!productCategoryCreateForm.valid">Toevoegen</button>
+    </div>
+</ng-template>
+<!-- END CONFIRM DELETION MODAL-->

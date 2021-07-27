@@ -21,6 +21,10 @@ import { ManageProductDetailsComponent } from './components/manage-product-detai
 import { ManageProductCreateComponent } from './components/manage-product-create/manage-product-create.component';
 import { ManageProductDeleteComponent } from './components/manage-product-delete/manage-product-delete.component';
 import { ManageProductCategoryCreateComponent } from './components/manage-product-category-create/manage-product-category-create.component';
+import { ManageProductCategoriesComponent } from './components/manage-product-categories/manage-product-categories.component';
+import { ManageProductCategoryQuickCreateComponent } from './components/manage-product-category-quick-create/manage-product-category-quick-create.component';
+import { ManageProductCategoryDetailsComponent } from './components/manage-product-category-details/manage-product-category-details.component';
+import { ManageProductCategoryDeleteComponent } from './components/manage-product-category-delete/manage-product-category-delete.component';
 
 registerLocaleData(localeNl, 'nl');
 
@@ -39,7 +43,11 @@ registerLocaleData(localeNl, 'nl');
     ManageProductDetailsComponent,
     ManageProductCreateComponent,
     ManageProductDeleteComponent,
-    ManageProductCategoryCreateComponent
+    ManageProductCategoryCreateComponent,
+    ManageProductCategoriesComponent,
+    ManageProductCategoryQuickCreateComponent,
+    ManageProductCategoryDetailsComponent,
+    ManageProductCategoryDeleteComponent
   ],
   imports: [
     BrowserModule,

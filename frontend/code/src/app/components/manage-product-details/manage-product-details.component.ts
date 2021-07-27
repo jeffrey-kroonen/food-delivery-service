@@ -23,9 +23,9 @@ export class ManageProductDetailsComponent implements OnInit {
   productImageUrl!: string;
 
   productDetailsForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
-    price_per_unit: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    price_per_unit: new FormControl('', [Validators.required, Validators.maxLength(6)]),
     product_category_id: new FormControl('', Validators.required),
     in_stock: new FormControl(''),
     is_active: new FormControl('')
@@ -40,7 +40,6 @@ export class ManageProductDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => this.handleGetProduct());
-    this.handleGetProductCategories();
   }
 
   handleGetProduct(): void {
@@ -58,11 +57,14 @@ export class ManageProductDetailsComponent implements OnInit {
   }
 
   handleGetRestaurantById(restaurantId: number): void {
-    this.restaurantService.getRestaurant(restaurantId).subscribe(data => this.restaurant = data);
+    this.restaurantService.getRestaurant(restaurantId).subscribe(data => {
+      this.restaurant = data;
+      this.handleGetProductCategories();
+    });
   }
 
   handleGetProductCategories(): void {
-    this.productCategoryService.retrieveAllProductCategories().subscribe(data => this.productCategories = data);
+    this.productCategoryService.getProductCategoriesByRestaurant(this.restaurant).subscribe(data => this.productCategories = data);
   }
 
   handleGetProductImageUrl(): void {
@@ -102,6 +104,13 @@ export class ManageProductDetailsComponent implements OnInit {
     this.productService.uploadProductImage(this.product, file).subscribe(data => {
       this.productImageUrl = data.path;
     });
+  }
+
+  onProductCategoryAdded(isCreated: boolean): void {
+    console.log(isCreated);
+    if (isCreated) {
+      this.handleGetProductCategories();
+    }
   }
 
 }

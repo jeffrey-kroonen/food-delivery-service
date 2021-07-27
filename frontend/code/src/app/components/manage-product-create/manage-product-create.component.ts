@@ -23,9 +23,9 @@ export class ManageProductCreateComponent implements OnInit {
   productImageUrl!: string;
 
   productCreateForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
-    price_per_unit: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    price_per_unit: new FormControl('', [Validators.required, Validators.maxLength(6)]),
     product_category_id: new FormControl('', Validators.required),
     in_stock: new FormControl(''),
     is_active: new FormControl('')
@@ -39,17 +39,19 @@ export class ManageProductCreateComponent implements OnInit {
     private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
-    this.handleGetProductCategories();
     // TODO: Get restaurant id from authenticated user in future.
     this.handleGetRestaurantById(1);
   }
 
   handleGetRestaurantById(restaurantId: number): void {
-    this.restaurantService.getRestaurant(restaurantId).subscribe(data => this.restaurant = data);
+    this.restaurantService.getRestaurant(restaurantId).subscribe(data => {
+      this.restaurant = data;
+      this.handleGetProductCategories();
+    });
   }
 
   handleGetProductCategories(): void {
-    this.productCategoryService.retrieveAllProductCategories().subscribe(data => this.productCategories = data);
+    this.productCategoryService.getProductCategoriesByRestaurant(this.restaurant).subscribe(data => this.productCategories = data);
   }
 
   handleProductCreateFormSubmit(): void {
@@ -77,6 +79,12 @@ export class ManageProductCreateComponent implements OnInit {
         this.formSubmitNotification = undefined;
         this.router.navigate([`/manage/products/${productId}`]);
       }, 2000);
+    }
+  }
+
+  onProductCategoryAdded(isCreated: boolean): void {
+    if (isCreated) {
+      this.handleGetProductCategories();
     }
   }
 

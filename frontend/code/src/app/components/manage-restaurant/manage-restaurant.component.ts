@@ -33,8 +33,8 @@ export class ManageRestaurantComponent implements OnInit {
   loadRestaurantProductsComponent: boolean = false;
 
   restaurantDetailsForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required, Validators.maxLength(250)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(2000)]),
     average_delivery_time: new FormControl('', Validators.required),
     delivery_charge: new FormControl('', Validators.required),
     minimum_order_amount: new FormControl('', Validators.required),

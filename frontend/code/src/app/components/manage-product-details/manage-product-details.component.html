@@ -1,3 +1,5 @@
+<app-manage-navigation></app-manage-navigation>
+
 <div class="container my-5">
 
     <div class="row mb-2">
@@ -29,7 +31,11 @@
                         <!-- PRODUCT DESCRIPTION TEXTAREA -->
                         <div class="mb-3">
                             <label for="textareaProductDescription" class="form-label">Product omschrijving</label>
-                            <textarea id="textareaProductDescription" class="form-control" rows="3" formControlName="description"></textarea>
+                            <textarea id="textareaProductDescription" [ngClass]="(productDetailsForm.get('description')?.errors?.maxlength && (productDetailsForm.get('description')?.dirty || productDetailsForm.get('description')?.touched)) ? 'form-control is-invalid' : 'form-control'" rows="3" formControlName="description" aria-describedby="textareaInvalidFeedback"></textarea>
+                            <div id="textareaInvalidFeedback" class="invalid-feedback">
+                                Maximaal 255 tekens.
+                            </div>
+
                         </div>
                         <!-- END PRODUCT DESCRIPTION TEXTAREA -->
 
@@ -49,12 +55,24 @@
 
                         <!-- PRODUCTCATEGORY SELECT-->
                         <div class="mb-3">
-                            <label for="selectProductCategory" class="form-label">Productcategorie</label>
-                            <select id="selectProductCategory" class="form-select" formControlName="product_category_id">
-                                <option *ngIf="product?.product_category_id == null" value="" selected>Selecteer een productcategorie..</option>
-                                <option *ngFor="let productCategory of productCategories" [value]="productCategory.id"
-                                [selected]="product?.product_category_id != null && product?.product_category_id == productCategory.id">{{ productCategory.name }}</option>
-                            </select>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="selectProductCategory" class="form-label">Productcategorie</label>
+                                </div>
+                            </div>
+                            <div class="row gy-2">
+                                <div class="col-xl-8">
+                                    <select id="selectProductCategory" class="form-select" formControlName="product_category_id">
+                                        <option *ngIf="product?.product_category_id == null" value="" selected>Selecteer een productcategorie..</option>
+                                        <option *ngFor="let productCategory of productCategories" [value]="productCategory.id"
+                                        [selected]="product?.product_category_id != null && product?.product_category_id == productCategory.id">{{ productCategory.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-4">
+                                    <app-manage-product-category-quick-create [restaurant]="restaurant" (productCategoryAdded)=onProductCategoryAdded($event)></app-manage-product-category-quick-create>
+                                </div>
+                            </div>
+                            
                         </div>
                         <!-- END PRODUCTCATEGORY SELECT-->
 

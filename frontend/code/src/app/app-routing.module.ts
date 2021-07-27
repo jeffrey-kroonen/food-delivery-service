@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ManageNavigationComponent } from './components/manage-navigation/manage-navigation.component';
+import { ManageProductCategoriesComponent } from './components/manage-product-categories/manage-product-categories.component';
+import { ManageProductCategoryCreateComponent } from './components/manage-product-category-create/manage-product-category-create.component';
+import { ManageProductCategoryDetailsComponent } from './components/manage-product-category-details/manage-product-category-details.component';
 import { ManageProductCreateComponent } from './components/manage-product-create/manage-product-create.component';
 import { ManageProductDetailsComponent } from './components/manage-product-details/manage-product-details.component';
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
@@ -16,6 +18,9 @@ const routes: Routes = [
   { path: 'manage/products/create', component: ManageProductCreateComponent },
   { path: 'manage/products/:id', component: ManageProductDetailsComponent },
   { path: 'manage/products', component: ManageProductsComponent },
+  { path: 'manage/product-categories/create', component: ManageProductCategoryCreateComponent },
+  { path: 'manage/product-categories/:id', component: ManageProductCategoryDetailsComponent },
+  { path: 'manage/product-categories', component: ManageProductCategoriesComponent },
 
   { path: '', component: RestaurantOverviewComponent }
 ];

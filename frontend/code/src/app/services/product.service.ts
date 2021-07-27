@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GetResponseProductCategoryList } from '../interfaces/get-response-product-category-list';
 import { Product } from '../models/product';
+import { ProductCategory } from '../models/product-category';
 import { Restaurant } from '../models/restaurant';
 
 @Injectable({
@@ -75,6 +76,12 @@ export class ProductService {
 
   getProductsByRestaurant(restaurant: Restaurant): Observable<Product[]> {
     const apiUrl = `${environment.backendBaseUrl}/restaurants/${restaurant.id}/products`;
+
+    return this.httpClient.get<Product[]>(apiUrl);
+  }
+
+  getProductsByProductCategory(productCategory: ProductCategory): Observable<Product[]> {
+    const apiUrl = `${environment.backendBaseUrl}/product-categories/${productCategory.id}/products`;
 
     return this.httpClient.get<Product[]>(apiUrl);
   }
