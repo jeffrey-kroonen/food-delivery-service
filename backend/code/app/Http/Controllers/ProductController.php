@@ -113,6 +113,13 @@ class ProductController extends Controller
         return response(['message' => 'Resource deleted'], 200);
     }
 
+    /**
+     * Upload an image.
+     *
+     * @param integer $id
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function uploadProductImage(int $id, Request $request)
     {
         $file = $request->file('image');

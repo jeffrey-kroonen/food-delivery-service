@@ -191,7 +191,7 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Get products by given restaurant id.
      *
      * @param integer $id
      * @return \Illuminate\Http\JsonResponse|Illuminate\Database\Eloquent\Collection
@@ -214,5 +214,30 @@ class RestaurantController extends Controller
         }
 
         return $products;
+    }
+
+    /**
+     * Get product categories by given restaurant id.
+     *
+     * @param integer $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getProductCategories(int $id)
+    {
+        $restaurant = Restaurant::find($id);
+
+        if (null === $restaurant)
+            return response()
+                    ->noContent();
+
+        // Get product categories of restaurant.
+        $productCategories = $restaurant->productCategories;
+
+        // Fix url to product image url and return new mapped array.
+        return $productCategories->map(function ($productCategory) {
+            $productCategory->image_url = !is_null($productCategory->image_url) ? (URL::to('/') . $productCategory->image_url) : null;
+            $productCategory->products;
+            return $productCategory;
+        });
     }
 }
