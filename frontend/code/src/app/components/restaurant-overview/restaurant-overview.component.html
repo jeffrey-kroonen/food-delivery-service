@@ -15,7 +15,7 @@
             <div class="card border-0 border-end rounded-0 bg-transparent">
                 <div class="card-body">
                     <!-- FILTERS -->
-                    <app-restaurant-filters [restaurants]="restaurants"></app-restaurant-filters>
+                    <app-restaurant-filters [restaurantsCount]="restaurants.length" (restaurantFilter)="onRestaurantFilter($event)"></app-restaurant-filters>
                     <!-- END FILTERS -->
                 </div>
             </div>
@@ -55,6 +55,12 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <div *ngIf="restaurants.length === 0">
+                <div class="alert alert-info">
+                    Helaas zijn er geen restaurants die voldoen aan jouw voorkeur.
                 </div>
             </div>
             <!-- END RESTAURANT CARDS -->

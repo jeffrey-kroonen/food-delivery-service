@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="filter-title mb-2">
-            <strong class="pb-5">{{ restaurants.length }} Restaurants</strong>
+            <strong class="pb-5">{{ restaurantsCount }} Restaurants</strong>
         </div>
     </div>
 </div>
@@ -13,19 +13,19 @@
         </div>
         
         <div class="form-check">
-            <input type="radio" name="min-order-amount" id="min-order-amount-first" class="form-check-input" checked="true">
+            <input type="radio" name="min-order-amount" id="min-order-amount-first" class="form-check-input" checked="true" (change)="applyMinAmountFilter(-1)">
             <label class="form-check-label" for="min-order-amount-first">
                 Geen voorkeur
             </label>
         </div>
         <div class="form-check">
-            <input type="radio" name="min-order-amount" id="min-order-amount-second" class="form-check-input">
+            <input type="radio" name="min-order-amount" id="min-order-amount-second" class="form-check-input" (change)="applyMinAmountFilter(10.00)">
             <label class="form-check-label" for="min-order-amount-second">
                 &euro; 10,00 of minder
             </label>
         </div>
         <div class="form-check">
-            <input type="radio" name="min-order-amount" id="min-order-amount-third" class="form-check-input">
+            <input type="radio" name="min-order-amount" id="min-order-amount-third" class="form-check-input" (change)="applyMinAmountFilter(15.00)">
             <label class="form-check-label" for="min-order-amount-third">
                 &euro; 15,00 of minder
             </label>
@@ -40,26 +40,26 @@
         </div>
 
         <div class="form-check">
-            <input type="radio" name="delivery-charge" id="delivery-charge-first" class="form-check-input" checked="true">
+            <input type="radio" name="delivery-charge" id="delivery-charge-first" class="form-check-input" checked="true" (change)="applyDeliveryChargeFilter(-1)">
             <label class="form-check-label" for="delivery-charge-first">
                 Geen voorkeur
             </label>
         </div>
         <div class="form-check">
-            <input type="radio" name="delivery-charge" id="delivery-charge-second" class="form-check-input">
+            <input type="radio" name="delivery-charge" id="delivery-charge-second" class="form-check-input"  (change)="applyDeliveryChargeFilter(0)">
             <label class="form-check-label" for="delivery-charge-second">
                 Gratis
             </label>
         </div>
         <div class="form-check">
-            <input type="radio" name="delivery-charge" id="delivery-charge-third" class="form-check-input">
+            <input type="radio" name="delivery-charge" id="delivery-charge-third" class="form-check-input" (change)="applyDeliveryChargeFilter(1.00)">
             <label class="form-check-label" for="delivery-charge-third">
                 &euro; 1,00 of minder
             </label>
         </div>
         <div class="form-check">
-            <input type="radio" name="delivery-charge" id="delivery-charge-third" class="form-check-input">
-            <label class="form-check-label" for="delivery-charge-third">
+            <input type="radio" name="delivery-charge" id="delivery-charge-fourth" class="form-check-input" (change)="applyDeliveryChargeFilter(2.50)">
+            <label class="form-check-label" for="delivery-charge-fourth">
                 &euro; 2,50 of minder
             </label>
         </div>

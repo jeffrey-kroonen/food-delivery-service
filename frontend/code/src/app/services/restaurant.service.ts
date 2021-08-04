@@ -33,9 +33,14 @@ export class RestaurantService {
    * 
    * @returns Observable<Restaurant[]>
    */
-  getRestaurantList(): Observable<Restaurant[]> {
-    const apiUrl = `${environment.backendBaseUrl}/restaurants`;
+  getRestaurantList(filter?: any): Observable<Restaurant[]> {
+    let apiUrl = `${environment.backendBaseUrl}/restaurants`;
 
+    if (filter !== undefined) {
+      apiUrl += '?' + new URLSearchParams(filter).toString();
+    }
+
+    console.log(apiUrl);
     return this.httpClient.get<Restaurant[]>(apiUrl);
   }
 

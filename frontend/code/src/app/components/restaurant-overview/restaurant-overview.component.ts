@@ -37,4 +37,9 @@ export class RestaurantOverviewComponent implements OnInit {
     );
   }
 
+  onRestaurantFilter(restaurants: Restaurant[]) {
+    this.restaurants = restaurants;
+    console.log(restaurants);
+  }
+
 }

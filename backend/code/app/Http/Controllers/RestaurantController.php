@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 
@@ -29,11 +30,24 @@ class RestaurantController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Restaurant::all();
+        $restaurants = DB::table('restaurants');
+
+        if (null !== $request->query('minimum_order_amount')) {
+            $filter = (float) $request->query('minimum_order_amount');
+            $restaurants->where('minimum_order_amount', '<=', $filter);
+        }
+
+        if (null !==$request->query('delivery_charge')) {
+            $filter = (float) $request->query('delivery_charge');
+            $restaurants->where('delivery_charge', '<=', $filter);
+        }
+        
+        return $restaurants->get();
     }
 
     /**

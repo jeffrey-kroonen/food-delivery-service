@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Restaurant } from 'src/app/models/restaurant';
+import { RestaurantService } from 'src/app/services/restaurant.service';
 
 @Component({
   selector: 'app-restaurant-filters',
@@ -8,11 +9,36 @@ import { Restaurant } from 'src/app/models/restaurant';
 })
 export class RestaurantFiltersComponent implements OnInit {
 
-  @Input() restaurants: Restaurant[] = [];
+  @Input() restaurantsCount?: number;
+  
+  @Output() restaurantFilter: EventEmitter<Restaurant[]> = new EventEmitter<Restaurant[]>();
 
-  constructor() { }
+  queryFilter: any = {};
+
+  constructor(private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
   }
 
+  applyFilter() {
+    this.restaurantService.getRestaurantList(this.queryFilter).subscribe(data => { this.restaurantFilter.emit(data); console.log(data); } );
+  }
+
+  applyMinAmountFilter(filterAmount: number): void {
+    if (filterAmount === -1) {
+      delete this.queryFilter.minimum_order_amount;
+    } else {
+      this.queryFilter.minimum_order_amount = filterAmount;
+    }
+    this.applyFilter();
+  }
+
+  applyDeliveryChargeFilter(filterAmount: number): void {
+    if (filterAmount === -1) {
+      delete this.queryFilter.delivery_charge;
+    } else {
+      this.queryFilter.delivery_charge = filterAmount;
+    }
+    this.applyFilter();
+  }
 }
