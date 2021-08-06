@@ -11,7 +11,7 @@ export class RestaurantFiltersComponent implements OnInit {
 
   @Input() restaurantsCount?: number;
   
-  @Output() restaurantFilter: EventEmitter<Restaurant[]> = new EventEmitter<Restaurant[]>();
+  @Output() queryFilterUsable: EventEmitter<Restaurant[]> = new EventEmitter<Restaurant[]>();
 
   queryFilter: any = {};
 
@@ -21,7 +21,7 @@ export class RestaurantFiltersComponent implements OnInit {
   }
 
   applyFilter() {
-    this.restaurantService.getRestaurantList(this.queryFilter).subscribe(data => { this.restaurantFilter.emit(data); console.log(data); } );
+    this.queryFilterUsable.emit(this.queryFilter);
   }
 
   applyMinAmountFilter(filterAmount: number): void {

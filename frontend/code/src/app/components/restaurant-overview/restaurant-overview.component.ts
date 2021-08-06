@@ -10,9 +10,11 @@ import { RestaurantService } from 'src/app/services/restaurant.service';
 })
 export class RestaurantOverviewComponent implements OnInit {
 
+  timeout: any = null;
+
   restaurants: Restaurant[] = [];
 
-  logoImageUrls: any = [];
+  query: any = {};
 
   constructor(private restaurantService: RestaurantService,
               private route: ActivatedRoute) { }
@@ -32,14 +34,44 @@ export class RestaurantOverviewComponent implements OnInit {
     this.restaurantService.getRestaurantList().subscribe(
       data => {
         this.restaurants = data;
-        this.logoImageUrls = this.restaurantService.loadLogoImages(this.restaurants);
       }
     );
   }
 
-  onRestaurantFilter(restaurants: Restaurant[]) {
-    this.restaurants = restaurants;
-    console.log(restaurants);
+  /**
+   * On search, retrieve restaurants.
+   * 
+   * @param Eventevent 
+   */
+  onSearch(event: Event) {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      const query: string = (event.target as HTMLInputElement).value;
+      
+      if (query.length <= 3) {
+        delete this.query.search;
+      } else {
+        this.query.search = query;
+      }
+
+      this.applyQuery();
+    });
   }
 
+  /**
+   * On filter, retrieve restaurants.
+   * 
+   * @param any queryFilter 
+   */
+  onQueryFilter(queryFilter: any) {
+    this.query = queryFilter;
+    this.applyQuery();
+  }
+
+  /**
+   * Apply all filters to backend and retrieve restaurants.
+   */
+  applyQuery() {
+    this.restaurantService.getRestaurantList(this.query).subscribe(data => this.restaurants = data);
+  }
 }

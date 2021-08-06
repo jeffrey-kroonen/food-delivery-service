@@ -42,12 +42,20 @@ class RestaurantController extends Controller
             $restaurants->where('minimum_order_amount', '<=', $filter);
         }
 
-        if (null !==$request->query('delivery_charge')) {
+        if (null !== $request->query('delivery_charge')) {
             $filter = (float) $request->query('delivery_charge');
             $restaurants->where('delivery_charge', '<=', $filter);
         }
+
+        if (null !== $request->query('search') && strlen($request->query('search')) >= 3) {
+            $filter = (string) $request->query('search');
+            $restaurants->where('name', 'like', '%' . $filter . '%');
+        }
         
-        return $restaurants->get();
+        return $restaurants->get()->map(function ($restaurant) {
+            $restaurant->logo_image_url = !is_null($restaurant->logo_image_url) ? (URL::to('/') . $restaurant->logo_image_url) : null;
+            return $restaurant;
+        });
     }
 
     /**

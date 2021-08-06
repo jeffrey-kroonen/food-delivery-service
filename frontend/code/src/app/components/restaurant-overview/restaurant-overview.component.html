@@ -3,7 +3,7 @@
     <div class="row mt-5">
         <div class="col-md-6 mx-auto">
             <!-- SEARCH FORM -->
-            <input type="search" name="" id="" class="form-control rounded-0" placeholder="Zoek op restaurantnaam">
+            <input type="search" (keyup)="onSearch($event)" (search)="onSearch($event)" class="form-control rounded-0" placeholder="Zoek op restaurantnaam">
             <!-- END SEARCH FORM -->
         </div>
     </div>
@@ -15,7 +15,7 @@
             <div class="card border-0 border-end rounded-0 bg-transparent">
                 <div class="card-body">
                     <!-- FILTERS -->
-                    <app-restaurant-filters [restaurantsCount]="restaurants.length" (restaurantFilter)="onRestaurantFilter($event)"></app-restaurant-filters>
+                    <app-restaurant-filters [restaurantsCount]="restaurants.length" (queryFilterUsable)="onQueryFilter($event)"></app-restaurant-filters>
                     <!-- END FILTERS -->
                 </div>
             </div>
@@ -30,7 +30,7 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            <img src="{{ logoImageUrls[index] }}" style="max-width: 7rem;" alt="Restaurant logo">
+                            <img src="{{ restaurant.logo_image_url }}" style="max-width: 7rem;" alt="Restaurant logo">
                         </div>
                         <div class="col-md-9">
                             <div class="row">
