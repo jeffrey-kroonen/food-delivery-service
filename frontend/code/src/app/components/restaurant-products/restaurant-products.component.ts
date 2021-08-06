@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Product } from 'src/app/models/product';
 import { Restaurant } from 'src/app/models/restaurant';
 import { ProductService } from 'src/app/services/product.service';
 import { RestaurantService } from 'src/app/services/restaurant.service';
@@ -18,6 +19,8 @@ export class RestaurantProductsComponent implements OnInit {
   productImageUrls: any = [];
 
   currentUrl!: string;
+
+  activeProduct?: Product;
 
   constructor(private productService: ProductService,
               private restaurantService: RestaurantService,
@@ -49,6 +52,14 @@ export class RestaurantProductsComponent implements OnInit {
         this.productCategoryList = this.productService.getProductImageUrls(data);
       }
     );
+  }
+
+  onClick(product: Product) {
+    if (this.activeProduct == product) {
+      this.activeProduct = undefined;
+    } else {
+      this.activeProduct = product;
+    }
   }
 
 }

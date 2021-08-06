@@ -29,36 +29,44 @@
         <div class="p-3 bg-light h5" id="{{ productCategory.name }}">{{ productCategory.name }}</div>
         
         <div *ngIf="productCategory.products.length > 0; else productsEmpty">
-            <div *ngFor="let product of productCategory.products" class="card card-sharp mb-2 rounded-0 bg-transparent">
+            <div *ngFor="let product of productCategory.products" class="mb-2">
+                <div class="card card-sharp rounded-0 bg-transparent mb-0" (click)="onClick(product)">
 
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-outline-primary btn-sm border border-top-0 border-end-0 rounded-0" style="margin-bottom: -30px;">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary btn-sm border border-top-0 border-end-0 rounded-0" style="margin-bottom: -30px; width: 2rem;">
+                            <div *ngIf="activeProduct !== product; else elseActiveProductIcon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <ng-template #elseActiveProductIcon>
+                                <i class="fas fa-times"></i>
+                            </ng-template>
+                        </button>
+                    </div>
     
-                        <div class="col-md-9">
-                            <strong>{{ product.name}}</strong>
-                            <p>
-                                {{ product.description }}
-                            </p>
-    
-                            <strong class="text-warning">{{ product.price_per_unit | currency:'EUR' }}</strong>
-                        </div>
-                        
-                        <div class="col-md-3">
-                            <div *ngIf="product.image_url.length">
-                                <img src="{{ product.image_url }}" style="max-width: 7rem;" alt="Product afbeelding">
+                    <div class="card-body">
+                        <div class="row">
+        
+                            <div class="col-md-9">
+                                <strong>{{ product.name}}</strong>
+                                <p>
+                                    {{ product.description }}
+                                </p>
+        
+                                <strong class="text-warning">{{ product.price_per_unit | currency:'EUR' }}</strong>
                             </div>
                             
+                            <div class="col-md-3">
+                                <div *ngIf="product.image_url.length">
+                                    <img src="{{ product.image_url }}" style="max-width: 7rem;" alt="Product afbeelding">
+                                </div>
+                                
+                            </div>
+        
                         </div>
-    
                     </div>
+        
                 </div>
-    
+                <app-order-append *ngIf="activeProduct === product" [product]="product"></app-order-append>
             </div>
         </div>
         <ng-template #productsEmpty>

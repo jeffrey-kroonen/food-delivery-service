@@ -1,0 +1,21 @@
+<div class="border-start border-bottom border-end bg-light">
+    <div class="p-4">
+        <div class="w-50 d-flex">
+            <!-- COUNTER -->
+            <div class="btn-group me-2" role="group" aria-label="Product counter">
+                <button type="button" class="btn btn-primary" (click)="decreaseCounter()" [disabled]="counter === minCounter">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <span class="order-append-counter">{{ counter }}</span>
+                <button type="button" class="btn btn-primary" (click)="increaseCounter()" [disabled]="counter === maxCounter">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <!-- END COUNTER -->
+
+            <!-- APPEND BUTTON -->
+            <button class="btn btn-primary w-100 fw-bold">{{ totalPrice | currency:'EUR' }}</button>
+            <!-- END APPEND BUTTON -->
+        </div>
+    </div>
+</div>
