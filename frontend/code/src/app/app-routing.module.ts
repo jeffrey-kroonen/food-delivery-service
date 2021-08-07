@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ManageProductCategoriesComponent } from './components/manage-product-categories/manage-product-categories.component';
 import { ManageProductCategoryCreateComponent } from './components/manage-product-category-create/manage-product-category-create.component';
 import { ManageProductCategoryDetailsComponent } from './components/manage-product-category-details/manage-product-category-details.component';
@@ -21,6 +22,9 @@ const routes: Routes = [
   { path: 'manage/product-categories/create', component: ManageProductCategoryCreateComponent },
   { path: 'manage/product-categories/:id', component: ManageProductCategoryDetailsComponent },
   { path: 'manage/product-categories', component: ManageProductCategoriesComponent },
+
+  // Checkout
+  { path: 'checkout', component: CheckoutComponent },
 
   { path: '', component: RestaurantOverviewComponent }
 ];

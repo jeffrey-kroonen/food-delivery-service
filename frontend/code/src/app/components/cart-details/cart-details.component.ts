@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CartItem } from 'src/app/models/cart-item';
 import { Restaurant } from 'src/app/models/restaurant';
@@ -17,6 +17,7 @@ export class CartDetailsComponent implements OnInit {
   totalPrice!: number;
   totalQuantity!: number;
 
+  @Input() allowModifications: boolean = true;
   minCounter: number = 1;
   maxCounter: number = 99;
 
@@ -28,7 +29,21 @@ export class CartDetailsComponent implements OnInit {
     this.setCartItems();
     this.updateSubTotalPrice();
     this.updateTotalQuantity();
-    this.getRestaurant(Number(this.router.snapshot.paramMap.get('id')));
+    this.getRestaurant(this.getRestaurantId());
+  }
+
+  getRestaurantId(): number {
+    let restaurantId: any = this.router.snapshot.paramMap.get('id');
+
+    if (null === restaurantId) {
+      if (this.cartService.cartItems.length > 0) {
+        restaurantId = this.cartService.cartItems[0].product.restaurant_id
+      } else {
+        // TODO: Redirect to homepage.
+      }
+    }
+    
+    return Number(restaurantId);
   }
 
   getRestaurant(id: number) {

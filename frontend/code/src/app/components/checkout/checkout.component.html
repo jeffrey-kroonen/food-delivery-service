@@ -1,0 +1,129 @@
+<div class="container my-5">
+
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h3 mb-3">Afrekenen</h2>
+            <!-- CHECKOUT FORM -->
+            <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+                <!-- ADDRESS DATA -->
+                <div class="card rounded-0 mb-3">
+                    <div class="card-body">
+                        <fieldset formGroupName="address">
+                            <legend class="h5">Adresgegevens</legend>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputStreet" class="form-label">Straat</label>
+                                        <input type="text" formControlName="street" id="inputStreet" class="form-control" placeholder="Type je straatnaam" autocomplete="no" pattern="^([^0-9]*)$">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputStreetNumber" class="form-label">Huisnumer</label>
+                                        <input type="text" formControlName="streetNumber" id="inputStreetNumber" class="form-control" placeholder="Type je huisnummer" autocomplete="no">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputPostalCode" class="form-label">Postcode</label>
+                                        <input type="text" formControlName="postalCode" id="inputPostalCode" class="form-control" placeholder="Type je postcode" autocomplete="no">   
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputCity" class="form-label">Woonplaats</label>
+                                        <input type="text" formControlName="city" id="inputCity" class="form-control" placeholder="Type je woonplaats" autocomplete="no" pattern="^([^0-9]*)$">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- END ADDRESS DATA -->
+                <!-- PERSONAL DATA -->
+                <div class="card rounded-0 mb-3">
+                    <div class="card-body">
+                        <fieldset formGroupName="personal">
+                            <legend class="h5">Persoonlijke gegevens</legend>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputFirstName" class="form-label">Voornaam</label>
+                                        <input type="text" formControlName="firstName" id="inputFirstName" class="form-control" placeholder="Type je voornaam" autocomplete="no" pattern="^([^0-9]*)$">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputLastName" class="form-label">Achternaam</label>
+                                        <input type="text" formControlName="lastName" id="inputLastName" class="form-control" placeholder="Type je achternaam" autocomplete="no">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputEmail" class="form-label">E-mailadres</label>
+                                        <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Type je jouwnaam@email.com" autocomplete="no">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputPhone" class="form-label">Telefoon</label>
+                                        <input type="phone" formControlName="phone" id="inputPhone" class="form-control" placeholder="Type je telefoonnummer" autocomplete="no" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- END PERSONAL DATA -->
+                <!-- PAYMENT -->
+                <div class="card rounded-0 mb-3">
+                    <div class="card-body">
+                        <fieldset formGroupName="payment">
+                            <legend class="h5">Betalen</legend>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputCreditCardNumber" class="form-label">Creditcardnummer</label>
+                                        <input type="text" formControlName="creditCardNumber" id="inputCreditcardnumber" class="form-control" placeholder="Type je creditcardnummer" autocomplete="no" pattern="^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputCVVCSC" class="form-label">CVV / CSC</label>
+                                        <input type="text" formControlName="CVVCSV" id="inputCVVCSC" class="form-control" placeholder="Type je CVV / CSC" autocomplete="no" pattern="^([0-9]*)$">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="selectExpirationMonth" class="form-label">Vervalmaand</label>
+                                        <select formControlName="expirationMonth" id="selectExpirationMonth" class="form-select" aria-label="Expiration month">
+                                            <option value="">Selecteer een vervaldatum</option>
+                                            <option value="TODO">TODO</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="selectExpirationYear" class="form-label">Vervaljaar</label>
+                                        <select formControlName="expirationYear" id="selectExpirationYear" class="form-select" aria-label="Expiration year">
+                                            <option value="">Selecteer een vervaljaar</option>
+                                            <option value="TODO">TODO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- END PAYMENT -->
+                <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="orderForm.invalid">Betalen</button>
+            </form>
+            <!-- END CHECKOUT FORM -->
+        </div>
+        <div class="col-md-4">
+            <h2 class="h3 mb-3">Bestellingsoverzicht</h2>
+            <!-- CART DETAILS -->
+            <div class="card rounded-0 mb-3">
+                <div class="card-body">
+                    <app-cart-details [allowModifications]=false></app-cart-details>
+                </div>
+            </div>
+            <!-- END CART DETAILS -->
+        </div>
+    </div>
+</div>

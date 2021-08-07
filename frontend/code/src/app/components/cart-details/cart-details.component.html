@@ -9,7 +9,7 @@
                 <span>{{ cartItem.price | currency:'EUR' }}</span>
             </div>
         </div>
-        <div class="d-flex">
+        <div *ngIf="allowModifications" class="d-flex">
             <button type="button" class="btn btn-outline-primary btn-sm rounded-0 me-2" (click)="decreaseQuantity(cartItem)"> <!-- (click)="decreaseCounter()" [disabled]="counter === minCounter" -->
                 <i class="fas fa-minus"></i>
             </button>
