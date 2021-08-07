@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { Restaurant } from 'src/app/models/restaurant';
@@ -54,12 +54,11 @@ export class RestaurantProductsComponent implements OnInit {
     );
   }
 
-  onClick(product: Product) {
+  onClick(product: Product): void {
     if (this.activeProduct == product) {
       this.activeProduct = undefined;
     } else {
       this.activeProduct = product;
     }
   }
-
 }

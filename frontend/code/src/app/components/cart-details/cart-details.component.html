@@ -1,0 +1,36 @@
+<ul class="list-group mb-3">
+    <li  *ngFor="let cartItem of cartItems" class="list-group-item px-0 py-3 rounded-0 border-start-0 border-top-0 border-end-0">
+        <div class="d-flex justify-content-between mb-2">
+            <div class="fw-bold">
+                <span class="me-2">{{ cartItem.quantity }}</span>
+                <span>{{ cartItem.product.name }}</span>
+            </div>
+            <div>
+                <span>{{ cartItem.price | currency:'EUR' }}</span>
+            </div>
+        </div>
+        <div class="d-flex">
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-0 me-2" (click)="decreaseQuantity(cartItem)"> <!-- (click)="decreaseCounter()" [disabled]="counter === minCounter" -->
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-0" (click)="increaseQuantity(cartItem)"> <!-- (click)="increaseCounter()" [disabled]="counter === maxCounter"-->
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </li>
+</ul>
+
+<div class="d-flex justify-content-between mb-2">
+    <span>Subtotaal</span>
+    <span>{{ subTotalPrice | currency:'EUR' }}</span>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+    <span>Bezorgkosten</span>
+    <span>{{ restaurant?.delivery_charge | currency:'EUR' }}</span>
+</div>
+
+<div class="d-flex justify-content-between mb-2 fw-bold">
+    <span>Totaal</span>
+    <span>{{ totalPrice | currency:'EUR' }}</span>
+</div>

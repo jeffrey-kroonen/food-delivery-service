@@ -1,19 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
-  selector: 'app-order-append',
-  templateUrl: './order-append.component.html',
-  styleUrls: ['./order-append.component.css']
+  selector: 'app-cart-append',
+  templateUrl: './cart-append.component.html',
+  styleUrls: ['./cart-append.component.css']
 })
-export class OrderAppendComponent implements OnInit {
+export class CartAppendComponent implements OnInit {
   @Input() product!: Product;
   counter: number = 1;
   totalPrice!: number;
   minCounter: number = 1;
   maxCounter: number = 99;
 
-  constructor() { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
     this.totalPrice = this.product.price_per_unit;
@@ -35,6 +36,10 @@ export class OrderAppendComponent implements OnInit {
 
   computeTotalPrice() {
     this.totalPrice = this.product.price_per_unit * this.counter;
+  }
+
+  onAddToCart(): void {
+    this.cartService.addToCart(this.product, this.counter);
   }
 
 }

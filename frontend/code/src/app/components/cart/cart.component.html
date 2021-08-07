@@ -1,0 +1,24 @@
+<!-- CART BUTTON -->
+<button class="btn btn-outline-dark rounded-0" (click)="open(content)" id="shopping-cart">
+    <i class="fas fa-shopping-cart fa-lg me-2"></i>
+    <span class="badge rounded-pill bg-dark">{{ cartTotalQuanty }}</span>
+</button>
+<!-- END CART BUTTON -->
+
+<!-- CART DETAILS MODAL-->
+<ng-template #content let-modal class="modal-content modal-lg" tabindex="-1">
+    <div class="modal-header">
+        <h5 class="modal-title" id="product-details-delete"><i class="fas fa-shopping-cart"></i> Winkelwagen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="px-3">
+            <app-cart-details></app-cart-details>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss('cancel click')">Annuleren</button>
+        <button type="button" class="btn btn-primary" ngbAutofocus>Afrekenen</button>
+    </div>
+</ng-template>
+<!-- END CART DETAILS MODAL-->

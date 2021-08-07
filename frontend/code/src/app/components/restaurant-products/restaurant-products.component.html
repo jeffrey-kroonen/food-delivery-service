@@ -1,4 +1,10 @@
 <div class="container mt-5 mb-5">
+    <div class="row sticky-top" style="top:1rem;">
+        <div class="text-end">
+            <app-cart></app-cart>
+        </div>
+    </div>
+
     <!-- RESTAURANT INFORMATION -->
     <div class="row mb-3">
         <div class="col-md-6">
@@ -66,7 +72,7 @@
                     </div>
         
                 </div>
-                <app-order-append *ngIf="activeProduct === product" [product]="product"></app-order-append>
+                <app-cart-append *ngIf="activeProduct === product" [product]="product"></app-cart-append>
             </div>
         </div>
         <ng-template #productsEmpty>

@@ -1,0 +1,4 @@
+#shopping-cart,
+#shopping-cart .badge {
+    transition: .5s;
+}

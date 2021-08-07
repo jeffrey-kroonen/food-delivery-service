@@ -25,7 +25,9 @@ import { ManageProductCategoriesComponent } from './components/manage-product-ca
 import { ManageProductCategoryQuickCreateComponent } from './components/manage-product-category-quick-create/manage-product-category-quick-create.component';
 import { ManageProductCategoryDetailsComponent } from './components/manage-product-category-details/manage-product-category-details.component';
 import { ManageProductCategoryDeleteComponent } from './components/manage-product-category-delete/manage-product-category-delete.component';
-import { OrderAppendComponent } from './components/order-append/order-append.component';
+import { CartComponent } from './components/cart/cart.component';
+import { CartAppendComponent } from './components/cart-append/cart-append.component';
+import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 
 registerLocaleData(localeNl, 'nl');
 
@@ -49,7 +51,9 @@ registerLocaleData(localeNl, 'nl');
     ManageProductCategoryQuickCreateComponent,
     ManageProductCategoryDetailsComponent,
     ManageProductCategoryDeleteComponent,
-    OrderAppendComponent
+    CartComponent,
+    CartAppendComponent,
+    CartDetailsComponent
   ],
   imports: [
     BrowserModule,
