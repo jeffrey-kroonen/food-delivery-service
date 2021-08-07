@@ -41,6 +41,13 @@ export class CartService {
     this.computTotalQuantity();
   }
 
+  emptyCart() {
+    this.cartItems = [];
+
+    this.computTotalPrice();
+    this.computTotalQuantity();
+  }
+
   updateCartItem(cartItem: CartItem): void {
     const productInCartIndex = this.cartItems.findIndex(currentCartItem => currentCartItem.product.id === cartItem.product.id);
 

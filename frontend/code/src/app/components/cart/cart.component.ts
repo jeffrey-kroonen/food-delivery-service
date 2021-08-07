@@ -1,6 +1,9 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Restaurant } from 'src/app/models/restaurant';
 import { CartService } from 'src/app/services/cart.service';
+import { RestaurantService } from 'src/app/services/restaurant.service';
 
 @Component({
   selector: 'app-cart',
@@ -8,13 +11,29 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+  restaurant!: Restaurant;
   cartTotalQuanty: number = 0;
 
   constructor(private cartService: CartService,
-              private modalService: NgbModal) { }
+              private restaurantService: RestaurantService,
+              private modalService: NgbModal,
+              private router: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.updateTotalQuantity();
+    this.getRestaurant(Number(this.router.snapshot.paramMap.get('id')));
+  }
+
+  getRestaurant(id: number) {
+    this.restaurantService.getRestaurant(id).subscribe(restaurant => {
+      this.restaurant = restaurant;
+      
+      if (this.cartService.cartItems.length > 0) {
+        if (this.cartService.cartItems[0].product.restaurant_id !== this.restaurant.id) {
+          this.cartService.emptyCart();
+        }
+      }
+    });
   }
 
   open(content: any) {

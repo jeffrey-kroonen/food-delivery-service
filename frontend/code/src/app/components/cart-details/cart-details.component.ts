@@ -65,7 +65,6 @@ export class CartDetailsComponent implements OnInit {
       this.cartService.updateCartItem(cartItem);
     } else {
       this.cartService.deleteCartItem(cartItem);
-      console.log(this.cartItems);
     }
   }
 
