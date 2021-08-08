@@ -107,7 +107,6 @@ export class ManageProductDetailsComponent implements OnInit {
   }
 
   onProductCategoryAdded(isCreated: boolean): void {
-    console.log(isCreated);
     if (isCreated) {
       this.handleGetProductCategories();
     }

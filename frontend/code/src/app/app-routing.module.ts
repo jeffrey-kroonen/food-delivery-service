@@ -8,6 +8,7 @@ import { ManageProductCreateComponent } from './components/manage-product-create
 import { ManageProductDetailsComponent } from './components/manage-product-details/manage-product-details.component';
 import { ManageProductsComponent } from './components/manage-products/manage-products.component';
 import { ManageRestaurantComponent } from './components/manage-restaurant/manage-restaurant.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { RestaurantOverviewComponent } from './components/restaurant-overview/restaurant-overview.component';
 import { RestaurantProductsComponent } from './components/restaurant-products/restaurant-products.component';
 
@@ -25,6 +26,9 @@ const routes: Routes = [
 
   // Checkout
   { path: 'checkout', component: CheckoutComponent },
+
+  // Order
+  { path: 'order-details/:id', component: OrderDetailsComponent },
 
   { path: '', component: RestaurantOverviewComponent }
 ];

@@ -40,7 +40,6 @@ export class RestaurantService {
       apiUrl += '?' + new URLSearchParams(filter).toString();
     }
 
-    console.log(apiUrl);
     return this.httpClient.get<Restaurant[]>(apiUrl);
   }
 

@@ -47,8 +47,10 @@ class OrderController extends Controller
             'restaurant_id' => ['required', 'exists:App\Models\Restaurant,id']
         ]);
 
+        $orderId = null;
+
         try {
-            DB::transaction(function () use ($validatedData) {
+            DB::transaction(function () use ($validatedData, &$orderId) {
                 // Create new customer.
                 $customer = new Customer();
                 $customer->first_name = $validatedData['first_name'];
@@ -70,6 +72,7 @@ class OrderController extends Controller
                 $order->notes = $validatedData['notes'];
                 $order->order_status = Order::$orderStatuses['OPEN'];
                 $order->save();
+                $orderId = $order->id;
 
                 // Create new order lines.
                 foreach ($validatedData['cart_items'] as $cartItem) {
@@ -82,13 +85,13 @@ class OrderController extends Controller
                     $orderLine->price_per_unit = $cartItem['product']['price_per_unit'];
                     $orderLine->sales_price_per_unit = $cartItem['product']['sales_price_per_unit'];
                     $orderLine->tax_percentage = $cartItem['product']['tax_percentage'];
-                    $orderLine->quantity = $cartItem['quantity']['quantity'];
+                    $orderLine->quantity = $cartItem['quantity'];
                     $orderLine->save();
                 }
-
-                // Return a HTTP response on success.
-                return response()->json(['message' => 'Created a new customer, order and order lines.'], 201);
             }, 5);
+
+            // Return a HTTP response on success.
+            return response()->json(['order_id' => $orderId, 'message' => 'Created a new customer, order and order lines.'], 201);
         } catch (\Exception $e) {
             // Return a HTTP response on failure.
             return response()->json([

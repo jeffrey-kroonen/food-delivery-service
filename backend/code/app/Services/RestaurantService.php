@@ -34,7 +34,7 @@ class RestaurantService
         if ($productCategories->count() > 0) {
             // Loop over the ProductCategories.
             foreach ($productCategories as $productCategory) {
-                // Fetch oroducts by product category.
+                // Fetch products by product category.
                 $products = $productCategory->products;
                 // Alter the markup and add it to the data array.
                 $data[] = [
