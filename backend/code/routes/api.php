@@ -42,6 +42,9 @@ Route::post('products/{id}/upload/product-image', [ProductController::class, 'up
 Route::post('product-categories/{id}/upload/product-category-image', [ProductCategoryController::class, 'uploadImage']);
 Route::get('product-categories/{id}/products', [ProductCategoryController::class, 'getProducts']);
 
+// OrderLine
+Route::get('orders/{id}/order-lines', [OrderController::class, 'orderLines']);
+
 // Location
 Route::post('location/reverse', [LocationController::class, 'getLocationFromCoordinates']);
 Route::post('location/query', [LocationController::class, 'getCoordinatesByQuery']);

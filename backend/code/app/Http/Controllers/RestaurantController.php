@@ -120,6 +120,7 @@ class RestaurantController extends Controller
             return response()
                     ->noContent();
 
+        $restaurant->logo_image_url = !is_null($restaurant->logo_image_url) ? (URL::to('/') . $restaurant->logo_image_url) : null;
         return $restaurant;
     }
 

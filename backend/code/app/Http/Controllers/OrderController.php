@@ -107,9 +107,16 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        $order = Order::find($id);
+
+        if (null === $order) {
+            return response()
+                ->noContent();
+        }
+
+        return $order;
     }
 
     /**
@@ -133,5 +140,11 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function orderLines(Request $request, int $id)
+    {
+        $order = Order::find($id);
+        return $order->orderLines;
     }
 }

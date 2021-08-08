@@ -33,4 +33,14 @@ class Order extends Model
         'COMPLETE' => 'complete',
         'CANCELED' => 'canceled'
     ];
+
+    /**
+     * Get collection of order lines related to the porder.
+     *
+     * @return App\Models\OrderLine[]
+     */
+    public function orderLines()
+    {
+        return $this->hasMany(OrderLine::class, 'order_id');
+    }
 }

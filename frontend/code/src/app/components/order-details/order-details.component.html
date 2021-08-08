@@ -1,1 +1,49 @@
-<p>order-details works!</p>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <!-- ORDER STATUS -->
+            <div class="text-center">
+                <div class="h4">Bedankt voor uw bestelling</div>
+                <p *ngIf="order.order_status == 'open'">Uw bestelling wordt momenteel verwerkt!</p>
+                <p *ngIf="order.order_status == 'complete'">Geniet van je bestelling van {{ restaurant.name }}!</p>
+                <div class="rounded-circle border mb-3 mx-auto" [ngClass]="{
+                    'bg-primary': order.order_status == 'open',
+                    'bg-success': order.order_status == 'complete'
+                }" style="width: 60px; height: 60px; line-height: 60px;">
+                    <i class="fas fa-lg text-white" [ngClass]="{
+                        'fa-spinner': order.order_status == 'open',
+                        'fa-check': order.order_status == 'complete'
+                    }"></i>
+                </div>
+            </div>
+            <!-- END ORDER STATUS -->
+            <!-- ORDER OVERVIEW -->
+            <div class="card rounded-0 mb-4">
+                <img [src]="restaurant.logo_image_url" alt="Het logo van het restaurant" class="card-img-top" style="max-height: 10rem; object-fit: cover;">
+                <hr class="mt-0">
+                <div class="card-body">
+                    <h3 class="h5">{{ restaurant.name }}</h3>
+
+                    <li  *ngFor="let orderLine of orderLines" class="list-group-item px-0 py-3 rounded-0 border-start-0 border-end-0">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <span class="me-4">{{ orderLine.quantity | number:'1.0-0' }}</span>
+                                <span>{{ orderLine.name }}</span>
+                            </div>
+                            <div>
+                                <span>{{ orderLine.price_per_unit | currency:'EUR' }}</span>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </div>
+            <!-- END ORDER OVERVIEW -->
+            <!-- RETURN LINK -->
+            <div class="text-center">
+                <strong class="d-block">Iets vergeten?</strong>
+                <a [href]="'restaurants/' + restaurant.id">Bestel opnieuw</a>
+            </div>
+            <!-- END RETURN LINK -->
+        </div>
+    </div>
+</div>

@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CartItem } from '../models/cart-item';
+import { Order } from '../models/order';
+import { OrderLine } from '../models/order-line';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +37,17 @@ export class OrderService {
     headers.append('Accept', 'application/json');
 
     return this.httpClient.post<any>(apiUrl, order, { headers: headers, observe: 'response' });
+  }
+
+  getOrder(id: number) {
+    const apiUrl = `${environment.backendBaseUrl}/orders/${id}`;
+
+    return this.httpClient.get<Order>(apiUrl);
+  }
+
+  getOrderLines(id: number) {
+    const apiUrl = `${environment.backendBaseUrl}/orders/${id}/order-lines`;
+
+    return this.httpClient.get<OrderLine[]>(apiUrl);
   }
 }
