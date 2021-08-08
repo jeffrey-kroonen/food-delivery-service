@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
-import { CheckoutService } from 'src/app/services/checkout.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-checkout',
@@ -34,14 +34,14 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private router: Router,
               private cartService: CartService,
-              private checkoutService: CheckoutService) { }
+              private orderService: OrderService) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
     const submittedForm = this.orderForm.value;
-    this.checkoutService.createOrder(submittedForm, this.cartService.cartItems).subscribe(response => {
+    this.orderService.createOrder(submittedForm, this.cartService.cartItems).subscribe(response => {
       if (response.status === 201) {
         this.router.navigate([`/order-details/${response.body.order_id}`]);
       } else {

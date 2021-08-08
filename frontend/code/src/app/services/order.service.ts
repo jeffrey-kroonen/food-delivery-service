@@ -6,7 +6,7 @@ import { CartItem } from '../models/cart-item';
 @Injectable({
   providedIn: 'root'
 })
-export class CheckoutService {
+export class OrderService {
 
   constructor(private httpClient: HttpClient) { }
 
