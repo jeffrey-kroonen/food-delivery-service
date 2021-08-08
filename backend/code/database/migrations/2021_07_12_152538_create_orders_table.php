@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('customer_id')->constrained('customers');
             $table->string('notes')->nullable();
             $table->enum('order_status', ['unpaid', 'open', 'complete', 'canceled']);
-            $table->dateTime('order_delivered_at');
+            $table->dateTime('order_delivered_at')->nullable();
             $table->timestamps();
         });
     }

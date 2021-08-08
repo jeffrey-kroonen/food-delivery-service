@@ -39,6 +39,11 @@ class Restaurant extends Model
         return $this->hasMany(ProductCategory::class);
     }
 
+    /**
+     * Get collection of products related to the restaurant.
+     *
+     * @return App\Models\Product[]
+     */
     public function products()
     {
         return $this->hasMany(Product::class);
