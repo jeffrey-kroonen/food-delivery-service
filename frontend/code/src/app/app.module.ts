@@ -28,6 +28,8 @@ import { ManageProductCategoryDeleteComponent } from './components/manage-produc
 import { CartComponent } from './components/cart/cart.component';
 import { CartAppendComponent } from './components/cart-append/cart-append.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 registerLocaleData(localeNl, 'nl');
 
@@ -53,7 +55,9 @@ registerLocaleData(localeNl, 'nl');
     ManageProductCategoryDeleteComponent,
     CartComponent,
     CartAppendComponent,
-    CartDetailsComponent
+    CartDetailsComponent,
+    CheckoutComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule,

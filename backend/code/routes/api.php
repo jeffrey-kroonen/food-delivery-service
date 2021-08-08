@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RestaurantController;
@@ -26,6 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('restaurants', RestaurantController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('product-categories', ProductCategoryController::class);
+Route::apiResource('orders', OrderController::class);
 
 // Restaurant
 Route::get('restaurants/{id}/product-category-list', [RestaurantController::class, 'getProductCategoryList']);
@@ -39,6 +41,9 @@ Route::post('products/{id}/upload/product-image', [ProductController::class, 'up
 // ProductCategory
 Route::post('product-categories/{id}/upload/product-category-image', [ProductCategoryController::class, 'uploadImage']);
 Route::get('product-categories/{id}/products', [ProductCategoryController::class, 'getProducts']);
+
+// OrderLine
+Route::get('orders/{id}/order-lines', [OrderController::class, 'orderLines']);
 
 // Location
 Route::post('location/reverse', [LocationController::class, 'getLocationFromCoordinates']);

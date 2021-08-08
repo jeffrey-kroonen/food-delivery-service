@@ -40,6 +40,10 @@ export class CartComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'cart-details'});
   }
 
+  close() {
+    this.modalService.dismissAll();
+  }
+
   updateTotalQuantity(): void {
     this.cartService.totalQuantity.subscribe(totalQuantity => this.cartTotalQuanty = totalQuantity);
   }

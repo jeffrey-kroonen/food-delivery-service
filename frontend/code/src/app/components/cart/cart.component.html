@@ -18,7 +18,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss('cancel click')">Annuleren</button>
-        <button type="button" class="btn btn-primary" ngbAutofocus>Afrekenen</button>
+        <button type="button" routerLink="/checkout" (click)="close()" class="btn btn-primary" ngbAutofocus>Afrekenen</button>
     </div>
 </ng-template>
 <!-- END CART DETAILS MODAL-->
